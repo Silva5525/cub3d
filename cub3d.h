@@ -6,7 +6,7 @@
 /*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 14:31:32 by wdegraf           #+#    #+#             */
-/*   Updated: 2025/01/06 18:05:57 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/01/06 19:29:59 by wdegraf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,7 @@ typedef struct s_cub3d
 
 }					t_c;
 
+void	er_ex(t_c cub, char *str);
+bool	scan_map(char *file, t_c *cub);
 
 #endif

@@ -6,9 +6,13 @@
 /*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 19:24:10 by wdegraf           #+#    #+#             */
-/*   Updated: 2025/01/06 19:24:15 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/01/06 19:29:35 by wdegraf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+bool	scan_map(char *file, t_c *cub)
+{
+	
+}

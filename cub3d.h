@@ -6,14 +6,22 @@
 /*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 14:31:32 by wdegraf           #+#    #+#             */
-/*   Updated: 2025/01/06 14:59:39 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/01/06 18:05:57 by wdegraf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
 
-#include <MLX42/MLX42.h>
+# include <libft/libft.h>
+
+# include <MLX42/MLX42.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <stdbool.h>
+
+# define WIDTH 512
+# define HEIGHT 512
 
 typedef struct s_texture
 {
@@ -24,8 +32,8 @@ typedef struct s_texture
 
 typedef struct s_vector
 {
-	double	x;
-	double	y;
+	double			x;
+	double			y;
 }					t_vector;
 
 typedef struct s_char

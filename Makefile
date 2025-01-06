@@ -6,7 +6,7 @@
 #    By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/06 14:57:16 by wdegraf           #+#    #+#              #
-#    Updated: 2025/01/06 14:57:19 by wdegraf          ###   ########.fr        #
+#    Updated: 2025/01/06 15:03:31 by wdegraf          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,7 +54,6 @@ clean:
 
 fclean: clean
 	rm -f $(NAME)
-	rm -rf $(LOCAL_DIR)
 	@echo "\033[31mFull cleanup completed\033[0m"
 
 re: fclean all

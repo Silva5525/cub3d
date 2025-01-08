@@ -6,7 +6,7 @@
 #    By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/06 14:57:16 by wdegraf           #+#    #+#              #
-#    Updated: 2025/01/06 18:31:31 by wdegraf          ###   ########.fr        #
+#    Updated: 2025/01/08 15:35:53 by wdegraf          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,9 @@ MLX_LIB				= $(LOCAL_DIR)/build/libmlx42.a
 LIBFT_DIR			= ./libft
 LIBFT_LIB			= $(LIBFT_DIR)/libft.a
 
-SRCS				= main.c
+SRCS				= main.c \
+					parse_map.c \
+					parse_line.c \
 OBJS				= $(SRCS:.c=.o)
 
 all: clone $(LIBFT_LIB) $(MLX_LIB) $(NAME)

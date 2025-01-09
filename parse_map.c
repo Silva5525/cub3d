@@ -6,7 +6,7 @@
 /*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 19:24:10 by wdegraf           #+#    #+#             */
-/*   Updated: 2025/01/08 15:57:27 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/01/09 19:53:11 by wdegraf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,25 +16,32 @@ static bool	map_err(char *line, int fd)
 {
 	write(2, "Error\n", 6);
 	write(2, line, ft_strlen(line));
-	free(line);
-	close(fd);
+	if (line)
+		free(line);
+	if (fd)
+		close(fd);
 	return (false);
 }
 
-static bool	*map_line_helper(bool map, char *line, t_c *cub, size_t size)
+static bool	map_line_helper(bool map, char *line, t_c *cub, size_t size)
 {
+	printf("map: %d\n", map);
 	if (map)
 	{
 		cub->map = ft_realloc(cub->map, sizeof(char *) * size,
 				sizeof(char *) * (size + 1));
 		if (!cub->map)
 			return (false);
-		cub->map[size++] = ft_strdub(line);
+		cub->map[size++] = ft_strdup(line);
 		size++;
 	}
 	else
+	{
+		printf("parse_line\n");
 		if (!parse_line(line, cub, NULL, NULL))
-			return (false);
+			return (write(2, "else map_line_helper\n", 21), false);
+	}
+
 	free(line);
 	line = NULL;
 	return (true);
@@ -53,12 +60,12 @@ static bool	map_line(int fd, t_c *cub, size_t size, size_t len)
 			break ;
 		if (line[0] == '\n')
 			continue ;
-		if (ft_strspn(line, "1NSEW") != ft_strlen(line))
+		if (ft_strspn(line, "1NSEW") == ft_strlen(line))
 			map = true;
 		else if (map)
 			return (map_err(line, fd));
 		if (!map_line_helper(map, line, cub, size))
-			return (map_err("map_line_helper", fd));
+			return (write(2, "MAP_LINE_HELPER\n", 16), map_err(line, fd));
 	}
 	free(line);
 	cub->map = ft_realloc(cub->map, sizeof(char *) * size,
@@ -77,8 +84,6 @@ bool	scan_map(char *file, t_c *cub)
 	if (!map_line(fd, cub, 0, 0))
 		return (close(fd), false);
 	close(fd);
-
-	/// check if map is valid
-
+	// vilid_map(cub);
 	return (true);
 }

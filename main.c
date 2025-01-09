@@ -6,11 +6,19 @@
 /*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 17:55:10 by wdegraf           #+#    #+#             */
-/*   Updated: 2025/01/08 12:56:51 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/01/09 18:59:51 by wdegraf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	er_ex(t_c cub, char *str)
+{
+	if (cub.mlx)
+		mlx_close_window(cub.mlx);
+	write(2, str, ft_strlen(str));
+	exit(EXIT_FAILURE);
+}
 
 static void	check_file(char *file, t_c *cub)
 {
@@ -18,14 +26,6 @@ static void	check_file(char *file, t_c *cub)
 		er_ex(*cub, "Map needs a .cub extension.\n");
 	if (!scan_map(file, cub))
 		er_ex(*cub, "Invalid map file.\n");
-}
-
-void	er_ex(t_c cub, char *str)
-{
-	if (cub.mlx)
-		mlx_close_window(cub.mlx);
-	write(2, &str, ft_strlen(str));
-	exit(EXIT_FAILURE);
 }
 
 int	main(int argc, char **argv)
@@ -42,5 +42,6 @@ int	main(int argc, char **argv)
 	if (!cub.mlx)
 		er_ex(cub, "mlx_init");
 	check_file(argv[1], &cub);
+	printf("successfully loaded map\n");  // debug
 	return (EXIT_SUCCESS);
 }

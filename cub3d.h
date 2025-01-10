@@ -6,7 +6,7 @@
 /*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 14:31:32 by wdegraf           #+#    #+#             */
-/*   Updated: 2025/01/09 17:31:00 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/01/10 21:31:31 by wdegraf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ typedef struct s_cub3d
 	mlx_t			*mlx;
 	mlx_image_t		*img;
 	char			**map;
+	int				map_width;
+	int				map_height;
 	t_texture		texture[4];
 	int				roof;
 	int				floor;
@@ -56,7 +58,7 @@ typedef struct s_cub3d
 
 void	er_ex(t_c cub, char *str);
 bool	scan_map(char *file, t_c *cub);
-bool	parse_line(const char *line, t_c *cub, mlx_texture_t *texture,
+bool	parse_line(char *trim_line, t_c *cub, mlx_texture_t *texture,
 			char *path);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 19:24:10 by wdegraf           #+#    #+#             */
-/*   Updated: 2025/01/09 19:53:11 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/01/10 20:20:12 by wdegraf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ static bool	map_err(char *line, int fd)
 
 static bool	map_line_helper(bool map, char *line, t_c *cub, size_t size)
 {
-	printf("map: %d\n", map);
 	if (map)
 	{
 		cub->map = ft_realloc(cub->map, sizeof(char *) * size,
@@ -37,33 +36,51 @@ static bool	map_line_helper(bool map, char *line, t_c *cub, size_t size)
 	}
 	else
 	{
-		printf("parse_line\n");
 		if (!parse_line(line, cub, NULL, NULL))
-			return (write(2, "else map_line_helper\n", 21), false);
+			return (write(2, "Error.\n In parse_line.\n", 21), false);
 	}
-
 	free(line);
 	line = NULL;
 	return (true);
 }
 
-static bool	map_line(int fd, t_c *cub, size_t size, size_t len)
+/// @brief Overwrites the newline character with a space character.
+/// and if the last character of the file is a map character we add 
+/// a space character for wall surround check.
+static char	*end_and_newl_char(char *line)
+{
+	size_t	len;
+	char	*out;
+
+	len = ft_strlen(line);
+	if (len > 0 && line[len - 1] == '\n')
+		line[len - 1] = '\0';
+	out = ft_strjoin(line, " ");
+	free(line);
+	return (out);
+}
+
+static bool	map_line(int fd, t_c *cub, size_t size)
 {
 	char	*line;
+	char	*raw_line;
 	bool	map;
 
 	map = false;
 	while (1)
 	{
-		line = get_next_line(fd);
-		if (line == NULL)
+		raw_line = get_next_line(fd);
+		if (raw_line == NULL)
 			break ;
-		if (line[0] == '\n')
+		if (raw_line[0] == '\n')
 			continue ;
-		if (ft_strspn(line, "1NSEW") == ft_strlen(line))
+		line = end_and_newl_char(raw_line);
+		if (ft_strspn(line, "01NSEW ") == ft_strlen(line))
 			map = true;
 		else if (map)
 			return (map_err(line, fd));
+		printf("line: %s\n", line);  // debug
+		printf("map: %d\n", map);  // debug
 		if (!map_line_helper(map, line, cub, size))
 			return (write(2, "MAP_LINE_HELPER\n", 16), map_err(line, fd));
 	}
@@ -81,7 +98,7 @@ bool	scan_map(char *file, t_c *cub)
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
 		er_ex(*cub, "Error\nCould not open file");
-	if (!map_line(fd, cub, 0, 0))
+	if (!map_line(fd, cub, 0))
 		return (close(fd), false);
 	close(fd);
 	// vilid_map(cub);

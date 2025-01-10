@@ -6,13 +6,13 @@
 #    By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/06 14:57:16 by wdegraf           #+#    #+#              #
-#    Updated: 2025/01/09 16:20:54 by wdegraf          ###   ########.fr        #
+#    Updated: 2025/01/10 16:24:28 by wdegraf          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME				= cub3d
 CC					= gcc
-CFLAGS				= -I./MLX42/include -I./libft -I.
+CFLAGS				= -g -Wall -Wextra -Werror -I./MLX42/include -I./libft -I.
 LDFLAGS				= -L./MLX42/build -lmlx42 -L./libft -lft -lglfw -ldl -pthread -lm
 
 REPO_URL			= https://github.com/codam-coding-college/MLX42.git

@@ -6,7 +6,7 @@
 /*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 17:55:10 by wdegraf           #+#    #+#             */
-/*   Updated: 2025/01/09 18:59:51 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/01/10 16:55:19 by wdegraf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,21 @@ static void	check_file(char *file, t_c *cub)
 		er_ex(*cub, "Invalid map file.\n");
 }
 
+void	free_mlx(t_c *cub)
+{
+	int	i;
+
+	i = 0;
+	while (i < 4)
+	{
+		if (cub->texture[i].img)
+			mlx_delete_image(cub->mlx, cub->texture[i].img);
+		i++;
+	}
+	if (cub->mlx)
+		mlx_terminate(cub->mlx);
+}
+
 int	main(int argc, char **argv)
 {
 	t_c		cub;
@@ -43,5 +58,6 @@ int	main(int argc, char **argv)
 		er_ex(cub, "mlx_init");
 	check_file(argv[1], &cub);
 	printf("successfully loaded map\n");  // debug
+	free_mlx(&cub);
 	return (EXIT_SUCCESS);
 }

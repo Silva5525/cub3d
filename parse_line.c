@@ -6,7 +6,7 @@
 /*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 15:35:58 by wdegraf           #+#    #+#             */
-/*   Updated: 2025/01/10 21:41:24 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/01/11 15:30:38 by wdegraf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	parse_color(char *line, int *color)
 	if (!color)
 		return (-1);
 	i = 0;
-	while (*line)
+	while (i < 3)
 	{
 		while (*line == ' ')
 			line++;
@@ -92,6 +92,7 @@ bool	parse_line(char *trim_line, t_c *cub, mlx_texture_t *texture,
 	int		i;
 	int		*color;
 
+	color = NULL;
 	if (!cub->mlx)
 		return (line_err("No mlx context in parse_line.\n"));
 	i = identifier(trim_line, &path);

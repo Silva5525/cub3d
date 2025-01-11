@@ -6,7 +6,7 @@
 /*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 13:16:56 by wdegraf           #+#    #+#             */
-/*   Updated: 2025/01/08 12:55:01 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/01/11 15:36:28 by wdegraf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,7 @@ static char	*seperate_line(t_struct *file)
 	ft_memcpy2(line, file->content, i);
 	hold = ft_strdup2(file->content + i);
 	if (!hold)
-	{
-		free(line);
-		return (NULL);
-	}
+		return (free(line), NULL);
 	free(file->content);
 	file->content = hold;
 	return (line);

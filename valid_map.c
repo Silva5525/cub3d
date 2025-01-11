@@ -6,8 +6,61 @@
 /*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 16:04:05 by wdegraf           #+#    #+#             */
-/*   Updated: 2025/01/10 22:01:11 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/01/10 22:05:13 by wdegraf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+static bool	map_char(char c)
+{
+	return (c == '0' || c == '1' || c == 'N' || c == 'S'
+		|| c == 'E' || c == 'W' || c == ' ');
+}
+
+static bool	wall_surround(t_c *cub, int x, int y)
+{
+	return (cub->map[y - 1][x] != ' ' && cub->map[y + 1][x] != ' ' &&
+		cub->map[y][x - 1] != ' ' && cub->map[y][x + 1] != ' ' &&
+		cub->map[y - 1][x] != '\0' && cub->map[y + 1][x] != '\0' &&
+		cub->map[y][x - 1] != '\0' && cub->map[y][x + 1] != '\0');
+}
+
+static bool	wall_cells(t_c *cub, int x, int y)
+{
+	if (cub->map[y][x] == '1' || cub->map[y][x] == ' ')
+	{
+		if (y == 0 || cub->map[y + 1] == NULL || x == 0 ||
+			cub->map[y][x + 1] == '\0')
+			return (ft_printf("Error\nMap is not enclosed at %d, %d\n",
+					x, y), false);
+		if (!wall_surround(cub, x, y))
+			return (ft_printf("Error\nMap is not surroundet at %d, %d\n",
+					x, y), false);
+	}
+	return (true);
+}
+
+bool	valid_map(t_c *cub, int p_count, int x, int y)
+{
+	while (cub->map[y])
+	{
+		while (cub->map[y][x])
+		{
+			if (!map_char(cub->map[y][x]))
+				return (false);
+			if (!wall_cells(cub, x, y))
+				return (false);
+			if (ft_strchr("NSEW", cub->map[y][x]))
+			{
+				if (p_count > 1)
+					return (write(2, "Error\nTo many Players in Map.\n", 30)
+						, false);
+				p_count++;
+			}
+			x++;
+		}
+		y++;
+	}
+	return (true);
+}

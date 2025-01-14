@@ -1,0 +1,11 @@
+NO ./textures/path_to_north_texture.png
+SO ./textures/path_to_south_texture.png
+WE ./textures/path_to_west_texture.png
+EA ./textures/path_to_east_texture.png
+
+F 170,170,170
+C 204,204,204
+
+1111
+1001
+1111

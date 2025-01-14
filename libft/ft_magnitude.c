@@ -6,7 +6,7 @@
 /*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 12:42:33 by wdegraf           #+#    #+#             */
-/*   Updated: 2024/11/19 13:18:06 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/01/14 10:43:02 by wdegraf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,12 @@ double	ft_magnitude(double re, double im)
 	if (re == 0.0 && im == 0.0)
 		return (0.0);
 	if (re == 0.0 || im == 0.0)
-		return (fabs(re) > fabs(im) ? fabs(re) : fabs(im));
+	{
+		if (fabs(re) > fabs(im))
+			return (fabs(re));
+		else
+			return (fabs(im));
+	}
 	re = fabs(re);
 	im = fabs(im);
 	if (re > im)

@@ -6,7 +6,7 @@
 /*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 19:24:10 by wdegraf           #+#    #+#             */
-/*   Updated: 2025/01/11 15:41:09 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/01/14 10:50:02 by wdegraf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,26 +24,24 @@ static bool	map_err(char *line, int fd)
 	return (false);
 }
 
-static bool	map_line_helper(bool map, char *line, t_c *cub, size_t size)
+static int	map_line_helper(bool map, char *line, t_c *cub, ssize_t size)
 {
 	if (map)
 	{
 		cub->map = ft_realloc(cub->map, sizeof(char *) * size,
 				sizeof(char *) * (size + 1));
 		if (!cub->map)
-			return (false);
-		cub->map[size++] = ft_strdup(line);
+			return (-1);
+		cub->map[size] = ft_strdup(line);
 		size++;
 	}
 	else
 	{
 		if (!parse_line(line, cub, NULL, NULL))
-			return (write(2, "Error.\n In parse_line.\n", 21), false);
+			return (write(2, "Error.\n In parse_line.\n", 23), -1);
 	}
-	if (line)
-		free(line);
 	line = NULL;
-	return (true);
+	return (size);
 }
 
 /// @brief Overwrites the newline character with a space character.
@@ -64,13 +62,11 @@ static char	*end_and_newl_char(char *line)
 	return (out);
 }
 
-static bool	map_line(int fd, t_c *cub, size_t size)
+static bool	map_line(int fd, t_c *cub, ssize_t size, bool map)
 {
 	char	*line;
 	char	*raw_line;
-	bool	map;
 
-	map = false;
 	while (1)
 	{
 		raw_line = get_next_line(fd);
@@ -83,7 +79,8 @@ static bool	map_line(int fd, t_c *cub, size_t size)
 			map = true;
 		else if (map)
 			return (map_err(line, fd));
-		if (!map_line_helper(map, line, cub, size))
+		size = map_line_helper(map, line, cub, size);
+		if (size == -1)
 			return (write(2, "MAP_LINE_HELPER\n", 16), map_err(line, fd));
 	}
 	cub->map = ft_realloc(cub->map, sizeof(char *) * size,
@@ -98,10 +95,10 @@ bool	scan_map(char *file, t_c *cub)
 
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
-		er_ex(*cub, "Error\nCould not open file");
-	if (!map_line(fd, cub, 0))
+		er_ex(*cub, "Error\nCould not open file\n");
+	if (!map_line(fd, cub, 0, false))
 		return (close(fd), false);
 	close(fd);
-	// vilid_map(cub);
+	valid_map(cub, 0, 0, 0);
 	return (true);
 }

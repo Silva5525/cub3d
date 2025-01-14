@@ -6,7 +6,7 @@
 /*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 16:04:05 by wdegraf           #+#    #+#             */
-/*   Updated: 2025/01/10 22:05:13 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/01/14 10:44:47 by wdegraf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,15 @@ static bool	map_char(char c)
 static bool	wall_surround(t_c *cub, int x, int y)
 {
 	return (cub->map[y - 1][x] != ' ' && cub->map[y + 1][x] != ' ' &&
-		cub->map[y][x - 1] != ' ' && cub->map[y][x + 1] != ' ' &&
-		cub->map[y - 1][x] != '\0' && cub->map[y + 1][x] != '\0' &&
-		cub->map[y][x - 1] != '\0' && cub->map[y][x + 1] != '\0');
+		cub->map[y][x - 1] != ' ' && cub->map[y][x + 1] != ' ');
 }
 
 static bool	wall_cells(t_c *cub, int x, int y)
 {
-	if (cub->map[y][x] == '1' || cub->map[y][x] == ' ')
+	if (cub->map[y][x] != '1' && cub->map[y][x] != ' ')
 	{
-		if (y == 0 || cub->map[y + 1] == NULL || x == 0 ||
-			cub->map[y][x + 1] == '\0')
+		if (y == 0 || cub->map[y + 1] == NULL || x == 0
+			|| cub->map[y][x + 1] == '\0')
 			return (ft_printf("Error\nMap is not enclosed at %d, %d\n",
 					x, y), false);
 		if (!wall_surround(cub, x, y))
@@ -45,22 +43,20 @@ bool	valid_map(t_c *cub, int p_count, int x, int y)
 {
 	while (cub->map[y])
 	{
+		x = 0;
 		while (cub->map[y][x])
 		{
 			if (!map_char(cub->map[y][x]))
-				return (false);
+				return (ft_printf("Invalid character '%c' at (%d, %d)\n",
+						cub->map[y][x], x, y), false);
 			if (!wall_cells(cub, x, y))
-				return (false);
+				return (ft_printf("Error at cell (%d, %d)\n", x, y), false);
 			if (ft_strchr("NSEW", cub->map[y][x]))
-			{
-				if (p_count > 1)
-					return (write(2, "Error\nTo many Players in Map.\n", 30)
-						, false);
-				p_count++;
-			}
+				if (++p_count > 1)
+					return (write(2, "Error\nToo many players\n", 23), false);
 			x++;
 		}
 		y++;
 	}
-	return (true);
+	return (p_count == 1);
 }

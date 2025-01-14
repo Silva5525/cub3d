@@ -6,7 +6,7 @@
 /*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 18:22:56 by wdegraf           #+#    #+#             */
-/*   Updated: 2025/01/09 18:48:11 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/01/14 10:44:12 by wdegraf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ bool	ft_str_end_with(const char *str, const char *end)
 
 	if (!str || !end)
 		return (false);
-
 	str_len = ft_strlen(str);
 	end_len = ft_strlen(end);
 	if (str_len < end_len)

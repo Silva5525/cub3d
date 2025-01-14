@@ -6,7 +6,7 @@
 /*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:13:48 by wdegraf           #+#    #+#             */
-/*   Updated: 2025/01/08 17:54:26 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/01/14 11:00:53 by wdegraf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,6 @@ int		ft_isupper(int c);
 bool	ft_isnumeric(const char *str);
 void	ft_write_smite(void);
 double	ft_magnitude(double re, double im);
-void	print_real(double r, int width, int dec);
 bool	ft_str_end_with(const char *str, const char *end);
 bool	ft_check_wall(size_t map_width, size_t map_height, char **map);
 size_t	ft_strspn(const char *s, const char *accept);

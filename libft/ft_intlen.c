@@ -6,7 +6,7 @@
 /*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 16:06:16 by wdegraf           #+#    #+#             */
-/*   Updated: 2024/08/10 20:43:17 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/01/14 10:23:00 by wdegraf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,3 +34,16 @@ int	ft_intlen(int n)
 	}
 	return (len);
 }
+
+// int	main(void)
+// {
+// 	int	n;
+
+// 	n = 123456789;
+// 	printf("The number of digits in %d is %d\n", n, ft_intlen(n));
+// 	n = -123456789;
+// 	printf("The number of digits in %d is %d\n", n, ft_intlen(n));
+// 	n = 0;
+// 	printf("The number of digits in %d is %d\n", n, ft_intlen(n));
+// 	return (EXIT_SUCCESS);
+// }

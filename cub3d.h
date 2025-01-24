@@ -6,7 +6,7 @@
 /*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 14:31:32 by wdegraf           #+#    #+#             */
-/*   Updated: 2025/01/11 16:01:46 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/01/24 11:48:36 by wdegraf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ typedef struct s_cub3d
 	t_texture		texture[4];
 	int				roof;
 	int				floor;
+	t_char			player;
 }					t_c;
 
 void	er_ex(t_c cub, char *str);
@@ -61,5 +62,6 @@ bool	scan_map(char *file, t_c *cub);
 bool	parse_line(char *trim_line, t_c *cub, mlx_texture_t *texture,
 			char *path);
 bool	valid_map(t_c *cub, int p_count, int x, int y);
+void	create_player(t_c *cub, int x, int y);
 
 #endif

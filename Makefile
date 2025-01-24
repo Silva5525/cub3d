@@ -6,13 +6,13 @@
 #    By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/06 14:57:16 by wdegraf           #+#    #+#              #
-#    Updated: 2025/01/11 17:48:51 by wdegraf          ###   ########.fr        #
+#    Updated: 2025/01/15 16:15:38 by wdegraf          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME				= cub3d
 CC					= gcc
-CFLAGS				= -Wall -Wextra -Werror -I./MLX42/include -I./libft -I.
+CFLAGS				= -g -fsanitize=address -o -Wall -Wextra -Werror -I./MLX42/include -I./libft -I.
 LDFLAGS				= -L./MLX42/build -lmlx42 -L./libft -lft -lglfw -ldl -pthread -lm
 
 # -g -fsanitize=address -o 
@@ -27,6 +27,7 @@ SRCS				= main.c \
 					parse_map.c \
 					parse_line.c \
 					valid_map.c \
+					create_player.c \
 					
 OBJS				= $(SRCS:.c=.o)
 

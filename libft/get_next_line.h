@@ -6,7 +6,7 @@
 /*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 13:17:46 by wdegraf           #+#    #+#             */
-/*   Updated: 2024/05/10 15:56:09 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/01/14 11:02:47 by wdegraf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,5 @@ char	*ft_strjoin2(char const *s1, char const *s2);
 char	*ft_strdup2(const char *str);
 char	*ft_strchr2(const char *str, int c);
 void	*ft_memcpy2(void *dst, const void *src, size_t len);
-
-// char	*ft_strjoin(char const *s1, char const *s2);
-// char	*ft_strdup(const char *str);
-// char	*ft_strchr(const char *str, int c);
-// void	*ft_memcpy(void *dst, const void *src, size_t len);
 
 #endif

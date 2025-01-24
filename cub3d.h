@@ -6,7 +6,7 @@
 /*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 14:31:32 by wdegraf           #+#    #+#             */
-/*   Updated: 2025/01/24 11:48:36 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/01/24 11:53:06 by wdegraf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,5 +63,6 @@ bool	parse_line(char *trim_line, t_c *cub, mlx_texture_t *texture,
 			char *path);
 bool	valid_map(t_c *cub, int p_count, int x, int y);
 void	create_player(t_c *cub, int x, int y);
+bool	map_err(char *line, int fd);
 
 #endif

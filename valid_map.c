@@ -6,11 +6,25 @@
 /*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 16:04:05 by wdegraf           #+#    #+#             */
-/*   Updated: 2025/01/24 11:48:31 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/01/24 11:52:52 by wdegraf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+bool	map_err(char *line, int fd)
+{
+	write(2, "Error\n", 6);
+	if (line)
+	{
+		write(2, line, ft_strlen(line));
+		free(line);
+	}
+	line = NULL;
+	if (fd)
+		close(fd);
+	return (false);
+}
 
 static bool	map_char(char c)
 {

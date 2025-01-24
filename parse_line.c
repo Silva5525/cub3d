@@ -6,7 +6,7 @@
 /*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 15:35:58 by wdegraf           #+#    #+#             */
-/*   Updated: 2025/01/24 11:48:23 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/01/24 11:51:52 by wdegraf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,8 @@ static bool	line_err(char *writ)
 	return (false);
 }
 
-static int	parse_color(char *line, int *color)
+static int	parse_color(char *line, int *color, int i, int out)
 {
-	int		i;
-	int		out;
-
 	color = (int *)malloc(sizeof(int) * 3);
 	if (!color)
 		return (-1);
@@ -46,8 +43,7 @@ static int	parse_color(char *line, int *color)
 		i++;
 	}
 	out = (150 << 24) | (color[0] << 16) | (color[1] << 8) | color[2];
-	free(color);
-	return (out);
+	return (free(color), out);
 }
 
 static int	identifier(char *trim_line, char **path)
@@ -108,8 +104,8 @@ bool	parse_line(char *trim_line, t_c *cub, mlx_texture_t *texture,
 			return (true);
 	}
 	if (ft_strncmp(trim_line, "F", 1) == 0)
-		return (cub->floor = parse_color(trim_line + 2, color), true);
+		return (cub->floor = parse_color(trim_line + 2, color, 0, 0), true);
 	if (ft_strncmp(trim_line, "C", 1) == 0)
-		return (cub->roof = parse_color(trim_line + 2, color), true);
+		return (cub->roof = parse_color(trim_line + 2, color, 0, 0), true);
 	return (line_err("Invalid line.\n"));
 }

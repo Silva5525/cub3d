@@ -12,6 +12,7 @@
 
 #include "cub3d.h"
 
+
 static	t_vector	init_dir(char view)
 {
 	if (view == 'N')

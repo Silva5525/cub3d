@@ -14,25 +14,23 @@
 
 void	free_mlx(t_c *cub, int i)
 {
+	if (cub->player.player_img)
+		mlx_delete_image(cub->mlx, cub->player.player_img);
 	if (cub->mlx)
-		mlx_close_window(cub->mlx);
+		mlx_delete_image(cub->mlx, cub->img);
 	while (cub->map_height)
 	{
 		cub->map_height--;
 		if (cub->map[cub->map_height])
 			free(cub->map[cub->map_height]);
-		cub->map[cub->map_height] = NULL;
 	}
 	if (cub->map)
-	{
 		free(cub->map);
-		cub->map = NULL;
-	}
+
 	while (cub->texture[i].img)
 	{
 		if (cub->texture[i].img)
 			mlx_delete_image(cub->mlx, cub->texture[i].img);
-		cub->texture[i].img = NULL;
 		i++;
 	}
 	if (cub->mlx)
@@ -59,33 +57,26 @@ static void	init_map_and_player(char *file, t_c *cub)
 	draw_map2D(cub);
 	mlx_image_to_window(cub->mlx, cub->img, 0, 0);
 	create_player(cub, 0, 0);
-	mlx_image_to_window(cub->mlx, cub->player.player_img, cub->player.pos.player_x * TILE_SIZE, cub->player.pos.player_y * TILE_SIZE);
+	mlx_image_to_window(cub->mlx, cub->player.player_img, cub->player.pos.x * TILE_SIZE, cub->player.pos.y * TILE_SIZE);
+	cub->player.pos.x = cub->player.player_img->instances[0].x;
+	cub->player.pos.y = cub->player.player_img->instances[0].y;
 }
 
-void	ft_hook(void* param)
+void	input_loop(mlx_key_data_t keydata, void* param)
 {
-	t_c	*cub = (t_c*)param;
-	cub->player.pos.player_x = cub->player.player_img->instances[0].x;
-	cub->player.pos.player_y = cub->player.player_img->instances[0].y;
-
-	if (mlx_is_key_down(cub->mlx, MLX_KEY_ESCAPE))
-		mlx_close_window(cub->mlx);
-
-	if (mlx_is_key_down(cub->mlx, MLX_KEY_W))
-		cub->player.pos.player_y -=4;
-	if (mlx_is_key_down(cub->mlx, MLX_KEY_A))
-		cub->player.pos.player_x -= 4;
-	if (mlx_is_key_down(cub->mlx, MLX_KEY_S))
-		cub->player.pos.player_y += 4;
-	if (mlx_is_key_down(cub->mlx, MLX_KEY_D))
-		cub->player.pos.player_x += 4;
-	cub->player.player_img->instances[0].x = cub->player.pos.player_x;
-	cub->player.player_img->instances[0].y = cub->player.pos.player_y;
-	/* if (!check_collision(new_x, new_y))
-    {
-        cub->player.player_img->instances[0].x = new_x;
-        cub->player.player_img->instances[0].y = new_y;
-    } */
+	t_c *cub = (t_c*)param;	
+	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
+		mlx_close_window(cub->mlx);	
+	if (keydata.key == MLX_KEY_W && keydata.action == MLX_PRESS)
+		cub->player.pos.y -= 4;
+	if (keydata.key == MLX_KEY_A && keydata.action == MLX_PRESS)
+		cub->player.pos.x -= 4;
+	if (keydata.key == MLX_KEY_S && keydata.action == MLX_PRESS)
+		cub->player.pos.y += 4;
+	if (keydata.key == MLX_KEY_D && keydata.action == MLX_PRESS)
+		cub->player.pos.x += 4;	
+	cub->player.player_img->instances[0].x = cub->player.pos.x;
+	cub->player.player_img->instances[0].y = cub->player.pos.y;
 }
 
 int	main(int argc, char **argv)
@@ -99,7 +90,8 @@ int	main(int argc, char **argv)
 	if (!cub.mlx)
 		er_ex(cub, "mlx_init");
 	init_map_and_player(argv[1], &cub);
-	mlx_loop_hook(cub.mlx, ft_hook, &cub);
+	//mlx_loop_hook(cub.mlx, ft_hook, &cub);
+	mlx_key_hook(cub.mlx, input_loop, &cub);
 	mlx_loop(cub.mlx);
 	printf("successfully loaded map\n");  // debug
 

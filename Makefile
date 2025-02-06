@@ -12,7 +12,7 @@
 
 NAME				= cub3d
 CC					= gcc
-CFLAGS				= -g -fsanitize=address -o -Wall -Wextra -Werror -I./MLX42/include -I./libft -I.
+CFLAGS				= -Wall -Wextra -Werror -I./MLX42/include -I./libft -I.
 LDFLAGS				= -L./MLX42/build -lmlx42 -L./libft -lft -lglfw -ldl -pthread -lm
 
 # -g -fsanitize=address -o 
@@ -28,7 +28,7 @@ SRCS				= main.c \
 					parse_line.c \
 					valid_map.c \
 					create_player.c \
-					draw_map.c
+					draw_map.c \
 					
 OBJS				= $(SRCS:.c=.o)
 

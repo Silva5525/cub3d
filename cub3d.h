@@ -36,17 +36,18 @@ typedef struct s_texture
 
 typedef struct s_vector
 {
-	float			player_x;
-	float			player_y;
+	float			x;
+	float			y;
 }					t_vector;
 
-typedef struct s_char
+typedef struct s_player
 {
 	mlx_image_t		*player_img;
 	t_vector		pos;
+	t_vector		dir;
 	float			angle;
 	t_vector		plane;
-}					t_char;
+}					t_player;
 
 typedef struct s_cub3d
 {
@@ -58,7 +59,7 @@ typedef struct s_cub3d
 	t_texture		texture[4];
 	int				roof;
 	int				floor;
-	t_char			player;
+	t_player		player;
 }					t_c;
 
 void	er_ex(t_c cub, char *str);

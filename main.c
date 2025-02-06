@@ -56,7 +56,36 @@ static void	init_map_and_player(char *file, t_c *cub)
 	cub->img = mlx_new_image(cub->mlx, WIDTH, HEIGHT);
 	if (!cub->img)
 		er_ex(*cub, "mlx_new_image\n");
+	draw_map2D(cub);
+	mlx_image_to_window(cub->mlx, cub->img, 0, 0);
 	create_player(cub, 0, 0);
+	mlx_image_to_window(cub->mlx, cub->player.player_img, cub->player.pos.player_x * TILE_SIZE, cub->player.pos.player_y * TILE_SIZE);
+}
+
+void	ft_hook(void* param)
+{
+	t_c	*cub = (t_c*)param;
+	cub->player.pos.player_x = cub->player.player_img->instances[0].x;
+	cub->player.pos.player_y = cub->player.player_img->instances[0].y;
+
+	if (mlx_is_key_down(cub->mlx, MLX_KEY_ESCAPE))
+		mlx_close_window(cub->mlx);
+
+	if (mlx_is_key_down(cub->mlx, MLX_KEY_W))
+		cub->player.pos.player_y -=4;
+	if (mlx_is_key_down(cub->mlx, MLX_KEY_A))
+		cub->player.pos.player_x -= 4;
+	if (mlx_is_key_down(cub->mlx, MLX_KEY_S))
+		cub->player.pos.player_y += 4;
+	if (mlx_is_key_down(cub->mlx, MLX_KEY_D))
+		cub->player.pos.player_x += 4;
+	cub->player.player_img->instances[0].x = cub->player.pos.player_x;
+	cub->player.player_img->instances[0].y = cub->player.pos.player_y;
+	/* if (!check_collision(new_x, new_y))
+    {
+        cub->player.player_img->instances[0].x = new_x;
+        cub->player.player_img->instances[0].y = new_y;
+    } */
 }
 
 int	main(int argc, char **argv)
@@ -70,7 +99,10 @@ int	main(int argc, char **argv)
 	if (!cub.mlx)
 		er_ex(cub, "mlx_init");
 	init_map_and_player(argv[1], &cub);
+	mlx_loop_hook(cub.mlx, ft_hook, &cub);
+	mlx_loop(cub.mlx);
 	printf("successfully loaded map\n");  // debug
+
 	free_mlx(&cub, 0);
 	write(1, "Game Over.\n", 11);
 	return (EXIT_SUCCESS);

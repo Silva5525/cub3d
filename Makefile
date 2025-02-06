@@ -28,6 +28,7 @@ SRCS				= main.c \
 					parse_line.c \
 					valid_map.c \
 					create_player.c \
+					draw_map.c
 					
 OBJS				= $(SRCS:.c=.o)
 

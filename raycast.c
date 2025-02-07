@@ -14,16 +14,16 @@ void raycast(t_c *cub)
 		float aTan = -1/tan(ra);
 		if (ra > PI) //looking up
 		{
-			ry = ((((int)cub->player.pos.y) >> 6) << 6) - 0.0001;
+			ry = ((((int)cub->player.pos.y) >> 5) << 5) - 0.0001; //shifting by 5, dividing or multyplying by 32
 			rx = (cub->player.pos.y - ry) * aTan + cub->player.pos.x;
-			yo = -64;
+			yo = -TILE_SIZE;
 			xo = -yo * aTan;
 		}
 		if (ra < PI) //looking down
 		{
-			ry = ((((int)cub->player.pos.y) << 6) << 6) + 64;
+			ry = ((((int)cub->player.pos.y) << 5) << 5) + 32;
 			rx = (cub->player.pos.y - ry) * aTan + cub->player.pos.x;
-			yo = 64;
+			yo = TILE_SIZE;
 			xo = -yo * aTan;
 		}
 		if (ra == 0 || ra == PI) //looking straight left or right
@@ -34,8 +34,8 @@ void raycast(t_c *cub)
 		}
 		while (dof < 8)
 		{
-			mx = (int)(rx) >> 6;
-			my = (int)(ry) >> 6;
+			mx = (int)(rx) >> 5;
+			my = (int)(ry) >> 5;
 			if (mx >= 0 && mx < cub->map_width && my >= 0 && my < cub->map_height && cub->map[my][mx] == '1') //ray hit wall
 			{
 				dof = 8;

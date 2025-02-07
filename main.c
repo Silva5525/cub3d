@@ -58,10 +58,10 @@ static void	init_map_and_player(char *file, t_c *cub)
 	draw_map2D(cub);
 	mlx_image_to_window(cub->mlx, cub->img, 0, 0);
 	create_player(cub, 0, 0);
-	mlx_image_to_window(cub->mlx, cub->player.player_img, cub->player.pos.x * TILE_SIZE, cub->player.pos.y * TILE_SIZE);
-	mlx_image_to_window(cub->mlx, cub->ray_img, cub->player.pos.x, cub->player.pos.y);
-	cub->player.pos.x = cub->player.player_img->instances[0].x;
-	cub->player.pos.y = cub->player.player_img->instances[0].y;
+	mlx_image_to_window(cub->mlx, cub->player.player_img, cub->player.pos.x * TILE_SIZE , cub->player.pos.y * TILE_SIZE);
+	mlx_image_to_window(cub->mlx, cub->ray_img, 0, 0);
+	cub->player.pos.x = cub->player.player_img->instances[0].x + (PLAYER_SIZE / 2);
+	cub->player.pos.y = cub->player.player_img->instances[0].y + (PLAYER_SIZE / 2);
 }
 
 void	input_loop(mlx_key_data_t keydata, void* param)
@@ -103,8 +103,8 @@ void	input_loop(mlx_key_data_t keydata, void* param)
 			cub->player.angle += 2 * PI;
 		cub->player.delta_pos = (t_vector){cos(cub->player.angle) * 5, sin(cub->player.angle) * 5};
 	}
-	cub->player.player_img->instances[0].x = cub->player.pos.x;
-	cub->player.player_img->instances[0].y = cub->player.pos.y;
+	cub->player.player_img->instances[0].x = cub->player.pos.x - (PLAYER_SIZE / 2);
+	cub->player.player_img->instances[0].y = cub->player.pos.y - (PLAYER_SIZE / 2);
 	raycast(cub);
 }
 

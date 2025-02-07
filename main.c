@@ -105,6 +105,7 @@ void	input_loop(mlx_key_data_t keydata, void* param)
 	}
 	cub->player.player_img->instances[0].x = cub->player.pos.x - (PLAYER_SIZE / 2);
 	cub->player.player_img->instances[0].y = cub->player.pos.y - (PLAYER_SIZE / 2);
+	clear_img(cub->ray_img);
 	raycast(cub);
 }
 

@@ -21,7 +21,7 @@ void raycast(t_c *cub)
 		}
 		if (ra < PI) //looking down
 		{
-			ry = ((((int)cub->player.pos.y) << 5) << 5) + 32;
+			ry = ((((int)cub->player.pos.y) >> 5) << 5) + 32;
 			rx = (cub->player.pos.y - ry) * aTan + cub->player.pos.x;
 			yo = TILE_SIZE;
 			xo = -yo * aTan;

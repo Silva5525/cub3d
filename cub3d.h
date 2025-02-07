@@ -79,4 +79,7 @@ void	draw_map2D(t_c *cub);
 void	raycast(t_c *cub);
 void	draw_line_dda(mlx_image_t *img, float x0, float y0, float x1, float y1, uint32_t color);
 
+//draw_utils.c
+void	clear_img(mlx_image_t *img);
+
 #endif

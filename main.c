@@ -54,10 +54,12 @@ static void	init_map_and_player(char *file, t_c *cub)
 	cub->img = mlx_new_image(cub->mlx, WIDTH, HEIGHT);
 	if (!cub->img)
 		er_ex(*cub, "mlx_new_image\n");
+	cub->ray_img = mlx_new_image(cub->mlx, WIDTH, HEIGHT);
 	draw_map2D(cub);
 	mlx_image_to_window(cub->mlx, cub->img, 0, 0);
 	create_player(cub, 0, 0);
 	mlx_image_to_window(cub->mlx, cub->player.player_img, cub->player.pos.x * TILE_SIZE, cub->player.pos.y * TILE_SIZE);
+	mlx_image_to_window(cub->mlx, cub->ray_img, cub->player.pos.x, cub->player.pos.y);
 	cub->player.pos.x = cub->player.player_img->instances[0].x;
 	cub->player.pos.y = cub->player.player_img->instances[0].y;
 }
@@ -67,17 +69,52 @@ void	input_loop(mlx_key_data_t keydata, void* param)
 	t_c *cub = (t_c*)param;	
 	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
 		mlx_close_window(cub->mlx);	
-	if (keydata.key == MLX_KEY_W && keydata.action == MLX_PRESS)
-		cub->player.pos.y -= 4;
-	if (keydata.key == MLX_KEY_A && keydata.action == MLX_PRESS)
-		cub->player.pos.x -= 4;
-	if (keydata.key == MLX_KEY_S && keydata.action == MLX_PRESS)
-		cub->player.pos.y += 4;
-	if (keydata.key == MLX_KEY_D && keydata.action == MLX_PRESS)
-		cub->player.pos.x += 4;	
+	if (keydata.key == MLX_KEY_W && keydata.action == MLX_PRESS) //Move forward
+	{
+		cub->player.pos.x += cub->player.delta_pos.x;
+		cub->player.pos.y += cub->player.delta_pos.y;
+	}
+	if (keydata.key == MLX_KEY_S && keydata.action == MLX_PRESS) //Move back
+	{
+		cub->player.pos.x -= cub->player.delta_pos.x;
+		cub->player.pos.y -= cub->player.delta_pos.y;
+	}
+	if (keydata.key == MLX_KEY_A && keydata.action == MLX_PRESS) //Move left
+	{
+		cub->player.pos.x += sin(cub->player.angle) * 5;
+		cub->player.pos.y -= cos(cub->player.angle) * 5;
+	}
+	if (keydata.key == MLX_KEY_D && keydata.action == MLX_PRESS) //Move right
+	{
+		cub->player.pos.x -= sin(cub->player.angle) * 5;
+		cub->player.pos.y += cos(cub->player.angle) * 5;
+	}
+	if (keydata.key == MLX_KEY_RIGHT && keydata.action == MLX_PRESS) //Rotate right
+	{
+		cub->player.angle += 0.1;
+		if (cub->player.angle > 2 * PI)
+			cub->player.angle -= 2 * PI;
+		cub->player.delta_pos = (t_vector){cos(cub->player.angle) * 5, sin(cub->player.angle) * 5};
+	}
+	if (keydata.key == MLX_KEY_LEFT && keydata.action == MLX_PRESS)	//Rotate left
+	{
+		cub->player.angle -= 0.1;
+		if (cub->player.angle < 0)
+			cub->player.angle += 2 * PI;
+		cub->player.delta_pos = (t_vector){cos(cub->player.angle) * 5, sin(cub->player.angle) * 5};
+	}
 	cub->player.player_img->instances[0].x = cub->player.pos.x;
 	cub->player.player_img->instances[0].y = cub->player.pos.y;
+	raycast(cub);
 }
+
+
+// void	game_loop(void *param)
+// {
+// 	t_c *cub = (t_c*)param;
+// 	//mlx_image_to_window(cub->mlx, cub->img, 0, 0);
+// 	//mlx_image_to_window(cub->mlx, cub->player.player_img, cub->player.pos.x * TILE_SIZE, cub->player.pos.y * TILE_SIZE);
+// }
 
 int	main(int argc, char **argv)
 {

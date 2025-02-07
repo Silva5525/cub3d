@@ -44,6 +44,7 @@ typedef struct s_player
 {
 	mlx_image_t		*player_img;
 	t_vector		pos;
+	t_vector		delta_pos;
 	t_vector		dir;
 	float			angle;
 	t_vector		plane;
@@ -53,6 +54,7 @@ typedef struct s_cub3d
 {
 	mlx_t			*mlx;
 	mlx_image_t		*img;
+	mlx_image_t		*ray_img;
 	char			**map;
 	int				map_width;
 	int				map_height;
@@ -71,6 +73,10 @@ void	create_player(t_c *cub, int x, int y);
 bool	map_err(char *line, int fd);
 
 //draw_map.c
-void draw_map2D(t_c *cub);
+void	draw_map2D(t_c *cub);
+
+//raycast.c
+void	raycast(t_c *cub);
+void	draw_line_dda(mlx_image_t *img, float x0, float y0, float x1, float y1, uint32_t color);
 
 #endif

@@ -29,6 +29,7 @@ SRCS				= main.c \
 					valid_map.c \
 					create_player.c \
 					draw_map.c \
+					raycast.c
 					
 OBJS				= $(SRCS:.c=.o)
 

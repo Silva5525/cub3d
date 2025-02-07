@@ -53,6 +53,7 @@ void	create_player(t_c *cub, int x, int y)
 			{
 				cub->player.pos = (t_vector){x + 0.25, y + 0.25};
 				cub->player.angle = init_angle(cub->map[y][x]);
+				cub->player.delta_pos = (t_vector){cos(cub->player.angle) * 5, sin(cub->player.angle) * 5};
 				cub->map[y][x] = '0';
 				drawPlayer(cub);
 				return ;

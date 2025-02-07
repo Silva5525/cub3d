@@ -26,6 +26,7 @@
 # define TILE_SIZE 32
 # define PLAYER_SIZE 16
 # define PI 3.141592
+# define DEGREE 0.0174533 //one degree in radians
 
 typedef struct s_texture
 {

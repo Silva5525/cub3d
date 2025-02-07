@@ -6,13 +6,17 @@ void raycast(t_c *cub)
 {
 	int r, mx, my, dof;
 	float rx, ry, ra, xo, yo;
-	ra = cub->player.angle;
+	ra = cub->player.angle - DEGREE * 30;
 	r = 0;
 	float distanceH = 1000000;
 	float hx = cub->player.pos.x;
 	float hy = cub->player.pos.y;
-	while(r < 1)
+	while(r < 60)
 	{
+		if (ra < 0)
+			ra += 2 * PI;
+		if (ra > 2 * PI)
+			ra -= 2 * PI;
 		dof = 0;
 		float aTan = -1/tan(ra);
 		if (ra > PI) //looking up
@@ -107,6 +111,7 @@ void raycast(t_c *cub)
 			ry = hy;
 		}
 		draw_line_dda(cub->ray_img, cub->player.pos.x, cub->player.pos.y, rx, ry, 0x00FF00FF);
+		ra+= DEGREE;
 		r++;
 	}
 }

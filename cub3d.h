@@ -26,6 +26,8 @@
 # define TILE_SIZE 32
 # define PLAYER_SIZE 16
 # define PI 3.141592
+# define MOVE_SPEED 0.1
+# define ROT_SPEED 0.05
 # define DEGREE 0.0174533 //one degree in radians
 
 typedef struct s_texture
@@ -56,6 +58,7 @@ typedef struct s_cub3d
 	mlx_t			*mlx;
 	mlx_image_t		*img;
 	mlx_image_t		*ray_img;
+	mlx_image_t		*world_img;
 	char			**map;
 	int				map_width;
 	int				map_height;
@@ -79,6 +82,9 @@ void	draw_map2D(t_c *cub);
 //raycast.c
 void	raycast(t_c *cub);
 void	draw_line_dda(mlx_image_t *img, float x0, float y0, float x1, float y1, uint32_t color);
+bool	collision(t_c *cub, float x, float y);
+bool	is_wall(t_c *cub, float x, float y);
+void	draw_3d(t_c *cub, int x, float final_dist);
 
 //draw_utils.c
 void	clear_img(mlx_image_t *img);

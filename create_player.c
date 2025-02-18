@@ -19,9 +19,9 @@ float	init_angle(char view)
 	if (view == 'S')
 		return (0.5 * PI);
 	if (view == 'W')
-		return (0);
-	if (view == 'E')
 		return (PI);
+	if (view == 'E')
+		return (0);
 	return (0);
 }
 

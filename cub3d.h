@@ -22,7 +22,7 @@
 # include <unistd.h>
 
 # define WIDTH 2048
-# define HEIGHT 2048
+# define HEIGHT 1024
 # define TILE_SIZE 32
 # define PLAYER_SIZE 16
 # define PI 3.141592
@@ -59,6 +59,7 @@ typedef struct s_cub3d
 	mlx_image_t		*img;
 	mlx_image_t		*ray_img;
 	mlx_image_t		*world_img;
+	mlx_image_t		*mini_map;
 	char			**map;
 	int				map_width;
 	int				map_height;
@@ -88,5 +89,6 @@ void	draw_3d(t_c *cub, int x, float final_dist, bool vertical_hit, float hit_x, 
 
 //draw_utils.c
 void	clear_img(mlx_image_t *img);
+void	draw_floor_and_ceiling(t_c *cub);
 
 #endif

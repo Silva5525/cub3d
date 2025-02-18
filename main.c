@@ -54,15 +54,28 @@ static void	init_map_and_player(char *file, t_c *cub)
 	cub->img = mlx_new_image(cub->mlx, WIDTH, HEIGHT);
 	if (!cub->img)
 		er_ex(*cub, "mlx_new_image\n");
+	cub->mini_map = mlx_new_image(cub->mlx, WIDTH, HEIGHT);
+	if (!cub->mini_map)
+		er_ex(*cub, "mlx_new_minimap_image\n");
 	cub->ray_img = mlx_new_image(cub->mlx, WIDTH, HEIGHT);
 	if (!cub->ray_img)
 		er_ex(*cub, "mlx_new_ray_image\n");
 	cub->world_img = mlx_new_image(cub->mlx, WIDTH, HEIGHT);
 	if (!cub->world_img)
-		er_ex(*cub, "mlx_new_ray_image\n");
-	draw_map2D(cub);
-	mlx_image_to_window(cub->mlx, cub->world_img, 0, 0);
+		er_ex(*cub, "mlx_new_world_image\n");
+
 	mlx_image_to_window(cub->mlx, cub->img, 0, 0);
+	//mlx_set_instance_depth(&cub->img->instances[0], 0);
+	
+	mlx_image_to_window(cub->mlx, cub->world_img, 0, 0);
+	//mlx_set_instance_depth(&cub->world_img->instances[0], 1);
+	
+	mlx_image_to_window(cub->mlx, cub->mini_map, 0, 0);
+	//mlx_set_instance_depth(&cub->mini_map->instances[0], 2);
+
+
+	draw_floor_and_ceiling(cub);
+	draw_map2D(cub);
 	create_player(cub, 0, 0);
 	mlx_image_to_window(cub->mlx, cub->player.player_img, cub->player.pos.x * TILE_SIZE , cub->player.pos.y * TILE_SIZE);
 	mlx_image_to_window(cub->mlx, cub->ray_img, 0, 0);

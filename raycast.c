@@ -52,13 +52,13 @@ void	raycast(t_c *cub)
 		// Determine which intersection is closer and draw the ray
 		if (distanceV < distanceH)
 		{
-			draw_line_dda(cub->ray_img, cub->player.pos.x, cub->player.pos.y, vx, vy, 0x00FF00FF);
+			draw_line_dda(cub->ray_img, cub->player.pos.x, cub->player.pos.y, vx, vy, 0x00FF009A);
 			distanceV *= cos(cub->player.angle - ra);
 			draw_3d(cub, r, distanceV, true, vx, vy);
 		}
 		else
 		{
-			draw_line_dda(cub->ray_img, cub->player.pos.x, cub->player.pos.y, hx, hy, 0x00FF00FF);
+			draw_line_dda(cub->ray_img, cub->player.pos.x, cub->player.pos.y, hx, hy, 0x00FF009A);
 			distanceH *= cos(cub->player.angle - ra);
 			draw_3d(cub, r, distanceH, false, hx, hy);
 		}
@@ -300,11 +300,11 @@ void	draw_3d(t_c *cub, int x, float final_dist, bool vertical_hit, float hit_x, 
 		mlx_put_pixel(cub->world_img, x, y, color);
 	}
 
-	// Draw Ceiling
+	/* // Draw Ceiling
 	for (int y = 0; y < draw_start; y++)
 		mlx_put_pixel(cub->world_img, x, y, cub->roof);
 
 	// Draw Floor
 	for (int y = draw_end; y < HEIGHT; y++)
-		mlx_put_pixel(cub->world_img, x, y, cub->floor);
+		mlx_put_pixel(cub->world_img, x, y, cub->floor); */
 }

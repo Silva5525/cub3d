@@ -6,7 +6,7 @@
 /*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 17:55:10 by wdegraf           #+#    #+#             */
-/*   Updated: 2025/01/15 16:22:12 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/02/18 19:37:21 by wdegraf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,20 +89,20 @@ static void	init_map_and_player(char *file, t_c *cub)
 	cub->player.pos.y = cub->player.player_img->instances[0].y + (PLAYER_SIZE / 2);
 }
 
-void	key_hook(void* param)
+void	key_hook(void *param)
 {
-	t_c *cub = (t_c*)param;
+	t_c *cub = (t_c *)param;
 	t_vector delta = {0, 0};
 
 	if (mlx_is_key_down(cub->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(cub->mlx);
-	if (mlx_is_key_down(cub->mlx, MLX_KEY_RIGHT)) // Rotate right
+	if (mlx_is_key_down(cub->mlx, MLX_KEY_RIGHT) || mlx_is_key_down(cub->mlx, MLX_KEY_E)) // Rotate right
 	{
 		cub->player.angle += 0.05;
 		if (cub->player.angle > 2 * PI)
 			cub->player.angle -= 2 * PI;
 	}
-	if (mlx_is_key_down(cub->mlx, MLX_KEY_LEFT)) // Rotate left
+	if (mlx_is_key_down(cub->mlx, MLX_KEY_LEFT) || mlx_is_key_down(cub->mlx, MLX_KEY_Q)) // Rotate left
 	{
 		cub->player.angle -= 0.05;
 		if (cub->player.angle < 0)
@@ -166,6 +166,7 @@ void	key_hook(void* param)
 	clear_img(cub->world_img);
 	raycast(cub);
 }
+
 
 
 int	main(int argc, char **argv)

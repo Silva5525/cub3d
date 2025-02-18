@@ -6,7 +6,7 @@
 #    By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/06 14:57:16 by wdegraf           #+#    #+#              #
-#    Updated: 2025/01/15 16:15:38 by wdegraf          ###   ########.fr        #
+#    Updated: 2025/02/18 21:45:27 by wdegraf          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME				= cub3d
 DEBUG_NAME			= cub3d_debug
 VALGRIND_DEBUG_NAME	= cub3d_valgrind_debug
 CC					= gcc
-CFLAGS				= -Wall -Wextra -Werror -I./MLX42/include -I./libft -I.
+CFLAGS				= -Wall -Wextra -Werror -g -fsanitize=address -I./MLX42/include -I./libft -I.
 DFLAGS				= -g -fsanitize=address
 VFLAGS				= -g
 LDFLAGS				= -L./MLX42/build -lmlx42 -L./libft -lft -lglfw -ldl -pthread -lm
@@ -24,6 +24,8 @@ LOCAL_DIR			= MLX42
 MLX_LIB				= $(LOCAL_DIR)/build/libmlx42.a
 LIBFT_DIR			= ./libft
 LIBFT_LIB			= $(LIBFT_DIR)/libft.a
+
+# -g -fsanitize=address
 
 SRCS				=	main.c \
 						parse_map.c \

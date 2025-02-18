@@ -1,70 +1,81 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   draw_map.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/18 22:06:15 by wdegraf           #+#    #+#             */
+/*   Updated: 2025/02/18 22:36:41 by wdegraf          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
-void draw_map2D(t_c *cub)
+static uint32_t	color_32(t_c *cub, int x, int y)
 {
-    int x;
-    int y;
-    int tx;
-    int ty;
-    uint32_t color;
+	uint32_t	color;
 
-    x = 0;
-    y = 0;
-    ty = 0;
-    while (cub->map[y] != NULL)
-    {
-        x = 0;
-        while (cub->map[y][x] != '\0' && cub->map[y][x] != '\n')
-        {
-            //Set Color
-            if (cub->map[y][x] == '1')
-                color = 0x0000009E;
-            else
-                color = 0x80809E9E;
-			
-            //color = 0x7F7F7FFF;
-            //Draw map
-            tx = 0;
-            while (tx < TILE_SIZE)
-            {
-                ty = 0;
-                while (ty < TILE_SIZE)
-                {
-                    mlx_put_pixel(cub->mini_map, x * TILE_SIZE + tx, y * TILE_SIZE + ty, color);
-                    ty++;
-                }
-                tx++;
-            }
-            x++;
-        }
-        y++;
-    }
+	if (cub->map[y][x] == '1')
+		color = 0x0000009E;
+	else
+		color = 0x80809E9E;
+	return (color);
 }
 
-void    draw_floor_and_ceiling(t_c *cub)
+void	draw_map2d(t_c *cub, int x, int y, int ty)
 {
-    int x;
-    int y;
+	int			tx;
+	uint32_t	color;
 
-    y = 0;
-    while (y < (HEIGHT / 2))
-    {
-        x = 0;
-        while (x <= WIDTH)
-        {
-            mlx_put_pixel(cub->img, x, y, cub->roof);
-            x++;
-        }
-        y++;
-    }
-    while (y < HEIGHT)
-    {
-        x = 0;
-        while (x <= WIDTH)
-        {
-            mlx_put_pixel(cub->img, x, y, cub->floor);
-            x++;
-        }
-        y++;
-    }
+	while (cub->map[y] != NULL)
+	{
+		x = 0;
+		while (cub->map[y][x] != '\0' && cub->map[y][x] != '\n')
+		{
+			color = color_32(cub, x, y);
+			tx = 0;
+			while (tx < TILE_SIZE)
+			{
+				ty = 0;
+				while (ty < TILE_SIZE)
+				{
+					mlx_put_pixel(cub->mini_map, x * TILE_SIZE + tx,
+						y * TILE_SIZE + ty, color);
+					ty++;
+				}
+				tx++;
+			}
+			x++;
+		}
+		y++;
+	}
+}
+
+void	draw_floor_and_ceiling(t_c *cub)
+{
+	int	x;
+	int	y;
+
+	y = 0;
+	while (y < (HEIGHT / 2))
+	{
+		x = 0;
+		while (x <= WIDTH)
+		{
+			mlx_put_pixel(cub->img, x, y, cub->roof);
+			x++;
+		}
+		y++;
+	}
+	while (y < HEIGHT)
+	{
+		x = 0;
+		while (x <= WIDTH)
+		{
+			mlx_put_pixel(cub->img, x, y, cub->floor);
+			x++;
+		}
+		y++;
+	}
 }

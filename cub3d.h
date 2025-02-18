@@ -6,7 +6,7 @@
 /*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 14:31:32 by wdegraf           #+#    #+#             */
-/*   Updated: 2025/01/24 11:53:06 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/02/18 22:22:51 by wdegraf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	create_player(t_c *cub, int x, int y);
 bool	map_err(char *line, int fd);
 
 //draw_map.c
-void	draw_map2D(t_c *cub);
+void	draw_map2d(t_c *cub, int x, int y, int ty);
 
 //raycast.c
 void	raycast(t_c *cub);

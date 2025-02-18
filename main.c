@@ -6,7 +6,7 @@
 /*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 17:55:10 by wdegraf           #+#    #+#             */
-/*   Updated: 2025/02/18 19:37:21 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/02/18 22:45:05 by wdegraf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,18 +70,11 @@ static void	init_map_and_player(char *file, t_c *cub)
 	if (!cub->world_img)
 		er_ex(*cub, "mlx_new_world_image\n");
 
-	mlx_image_to_window(cub->mlx, cub->img, 0, 0);
-	//mlx_set_instance_depth(&cub->img->instances[0], 0);
-	
-	mlx_image_to_window(cub->mlx, cub->world_img, 0, 0);
-	//mlx_set_instance_depth(&cub->world_img->instances[0], 1);
-	
+	mlx_image_to_window(cub->mlx, cub->img, 0, 0);	
+	mlx_image_to_window(cub->mlx, cub->world_img, 0, 0);	
 	mlx_image_to_window(cub->mlx, cub->mini_map, 0, 0);
-	//mlx_set_instance_depth(&cub->mini_map->instances[0], 2);
-
-
 	draw_floor_and_ceiling(cub);
-	draw_map2D(cub);
+	draw_map2d(cub, 0, 0, 0);
 	create_player(cub, 0, 0);
 	mlx_image_to_window(cub->mlx, cub->player.player_img, cub->player.pos.x * TILE_SIZE , cub->player.pos.y * TILE_SIZE);
 	mlx_image_to_window(cub->mlx, cub->ray_img, 0, 0);

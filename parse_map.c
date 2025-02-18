@@ -6,7 +6,7 @@
 /*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 19:24:10 by wdegraf           #+#    #+#             */
-/*   Updated: 2025/01/24 11:52:40 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/02/18 22:18:01 by wdegraf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 static int	map_line_helper(bool map, char *line, t_c *cub, ssize_t size)
 {
+	size_t	len;
+
 	if (map)
 	{
-		// Trim trailing spaces
-		size_t len = ft_strlen(line);
+		len = ft_strlen(line);
 		while (len > 0 && (line[len - 1] == ' ' || line[len - 1] == '\n'))
 			line[--len] = '\0';
-
 		cub->map = ft_realloc(cub->map, sizeof(char *) * size,
 				sizeof(char *) * (size + 2));
 		if (!cub->map)
@@ -28,20 +28,15 @@ static int	map_line_helper(bool map, char *line, t_c *cub, ssize_t size)
 		cub->map[size] = ft_strdup(line);
 		if (!cub->map[size])
 			return (-1);
-
 		size++;
 		cub->map[size] = NULL;
-
-		// Update map dimensions
 		cub->map_height++;
 		if ((int)len > cub->map_width)
 			cub->map_width = (int)len;
 	}
 	else
-	{
 		if (!parse_line(line, cub, NULL, NULL))
 			return (write(2, "Error.\n In parse_line.\n", 23), -1);
-	}
 	return (size);
 }
 
@@ -50,67 +45,19 @@ static int	map_line_helper(bool map, char *line, t_c *cub, ssize_t size)
 static char	*end_and_newl_char(char *line)
 {
 	size_t	len;
-
-	len = ft_strlen(line);
-	if (len > 0 && line[len - 1] == '\n')
-		line[len - 1] = '\0';
-
-	// Only append a space if needed (for surround check)
-	if (len > 0 && ft_strchr("01NSEW", line[len - 1]))
-	{
-		char *out = ft_strjoin(line, " ");
-		free(line);
-		return (out);
-	}
-
-	return (line);
-}
-
-/* static int	map_line_helper(bool map, char *line, t_c *cub, ssize_t size)
-{
-	if (map)
-	{
-		cub->map = ft_realloc(cub->map, sizeof(char *) * size,
-				sizeof(char *) * (size + 2));
-		if (!cub->map)
-			return (-1);
-		cub->map[size] = ft_strdup(line);
-		if (!cub->map[size])
-			return (-1);
-		size++;
-		cub->map[size] = NULL;
-		cub->map_height++;
-		cub->map_width = ft_strlen(line);
-	}
-	else
-	{
-		if (!parse_line(line, cub, NULL, NULL))
-			return (write(2, "Error.\n In parse_line.\n", 23), -1);
-	}
-	line = NULL;
-	return (size);
-} */
-
-/// @brief Overwrites the newline character with a space character.
-/// and if the last character of the file is a map character we add 
-/// a space character for wall surround check.
-
-
-
-/* static char	*end_and_newl_char(char *line)
-{
-	size_t	len;
 	char	*out;
 
 	len = ft_strlen(line);
 	if (len > 0 && line[len - 1] == '\n')
 		line[len - 1] = '\0';
-	out = ft_strjoin(line, " ");
-	if (line)
+	if (len > 0 && ft_strchr("01NSEW", line[len - 1]))
+	{
+		out = ft_strjoin(line, " ");
 		free(line);
-	line = NULL;
-	return (out);
-} */
+		return (out);
+	}
+	return (line);
+}
 
 static int	map_line2(char *raw_line, t_c *cub, ssize_t size, bool map)
 {

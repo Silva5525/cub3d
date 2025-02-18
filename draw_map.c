@@ -14,7 +14,7 @@ void draw_map2D(t_c *cub)
     while (cub->map[y] != NULL)
     {
         x = 0;
-        while (cub->map[y][x] != '\0')
+        while (cub->map[y][x] != '\0' && cub->map[y][x] != '\n')
         {
             //Set Color
             if (cub->map[y][x] == '1')
@@ -52,8 +52,7 @@ void    draw_floor_and_ceiling(t_c *cub)
         x = 0;
         while (x <= WIDTH)
         {
-            //mlx_put_pixel(cub->window, x, y, cub->roof);
-            mlx_put_pixel(cub->img, x, y, 0x7F7FFFFF);
+            mlx_put_pixel(cub->img, x, y, cub->roof);
             x++;
         }
         y++;
@@ -63,8 +62,7 @@ void    draw_floor_and_ceiling(t_c *cub)
         x = 0;
         while (x <= WIDTH)
         {
-            //mlx_put_pixel(cub->window, x, y, cub->floor);
-            mlx_put_pixel(cub->img, x, y, 0xA55A2AFF);
+            mlx_put_pixel(cub->img, x, y, cub->floor);
             x++;
         }
         y++;

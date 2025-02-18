@@ -16,7 +16,13 @@ void	free_mlx(t_c *cub, int i)
 {
 	if (cub->player.player_img)
 		mlx_delete_image(cub->mlx, cub->player.player_img);
-	if (cub->mlx)
+	if (cub->world_img)
+		mlx_delete_image(cub->mlx, cub->world_img);
+	if (cub->ray_img)
+		mlx_delete_image(cub->mlx, cub->ray_img);
+	if (cub->mini_map)
+		mlx_delete_image(cub->mlx, cub->mini_map);
+	if (cub->img)
 		mlx_delete_image(cub->mlx, cub->img);
 	while (cub->map_height)
 	{

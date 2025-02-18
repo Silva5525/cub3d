@@ -252,8 +252,8 @@ void	draw_3d(t_c *cub, int x, float final_dist, bool vertical_hit, float hit_x, 
 	float	draw_start;
 	float	draw_end;
 
-	// Projected wall height (Inverse proportional to distance)
-	line_height = (TILE_SIZE * HEIGHT) / final_dist;
+	// Projected wall height
+	line_height = (TILE_SIZE * HEIGHT) / (final_dist > 0.1 ? final_dist : 0.1);
 	draw_start = (HEIGHT / 2) - (line_height / 2);
 	if (draw_start < 0)
 		draw_start = 0;
@@ -261,16 +261,10 @@ void	draw_3d(t_c *cub, int x, float final_dist, bool vertical_hit, float hit_x, 
 	if (draw_end >= HEIGHT)
 		draw_end = HEIGHT - 1;
 
-	// Select wall texture based on hit direction
-	mlx_image_t *texture = NULL;
-	if (vertical_hit)
-	{
-		texture = (hit_x < cub->player.pos.x) ? cub->texture[2].img : cub->texture[3].img; // WEST or EAST
-	}
-	else
-	{
-		texture = (hit_y < cub->player.pos.y) ? cub->texture[0].img : cub->texture[1].img; // NORTH or SOUTH
-	}
+	// Select texture based on hit direction
+	mlx_image_t *texture = (vertical_hit) ? 
+		((hit_x < cub->player.pos.x) ? cub->texture[2].img : cub->texture[3].img) :
+		((hit_y < cub->player.pos.y) ? cub->texture[0].img : cub->texture[1].img);
 
 	if (!texture || !texture->pixels)
 	{
@@ -278,33 +272,32 @@ void	draw_3d(t_c *cub, int x, float final_dist, bool vertical_hit, float hit_x, 
 		return;
 	}
 
-	// Determine texture column (x-coordinate on the texture)
+	// Texture column selection
 	float fx = fmod(hit_x, TILE_SIZE);
 	float fy = fmod(hit_y, TILE_SIZE);
-	uint32_t tex_x = (vertical_hit) ? (int)(fy / TILE_SIZE * texture->width) : (int)(fx / TILE_SIZE * texture->width);
-	if (tex_x >= texture->width) tex_x = texture->width - 1;
+	uint32_t tex_x = (vertical_hit) ? 
+		(int)(fy / TILE_SIZE * texture->width) : 
+		(int)(fx / TILE_SIZE * texture->width);
+	if (tex_x >= texture->width) 
+		tex_x = texture->width - 1;
 
-	// Texture vertical scaling
-	float step = (float)texture->height / line_height;
-	float tex_pos = 0.0;
+	// Improved Texture Vertical Scaling
+	float step = (float)texture->height / (line_height > 1 ? line_height : 1);
+	float tex_pos = (draw_start - (HEIGHT / 2) + (line_height / 2)) * step;
 
-	// Draw Wall with Texture Mapping
+	// Draw Wall with Smoothed Texture Mapping
 	for (int y = draw_start; y < draw_end; y++)
 	{
-		uint32_t tex_y = (int)tex_pos % texture->height;
+		int tex_y = (int)tex_pos;
+		if (tex_y >= (int)texture->height)
+			tex_y = texture->height - 1;
+
 		tex_pos += step;
 
-		// Get pixel color and convert to RGBA
+		// Get and Convert Texture Color
 		uint32_t color = convert_color(((uint32_t *)texture->pixels)[tex_y * texture->width + tex_x]);
 
+		// Render the Pixel
 		mlx_put_pixel(cub->world_img, x, y, color);
 	}
-
-	/* // Draw Ceiling
-	for (int y = 0; y < draw_start; y++)
-		mlx_put_pixel(cub->world_img, x, y, cub->roof);
-
-	// Draw Floor
-	for (int y = draw_end; y < HEIGHT; y++)
-		mlx_put_pixel(cub->world_img, x, y, cub->floor); */
 }

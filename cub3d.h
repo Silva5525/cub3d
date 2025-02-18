@@ -84,7 +84,7 @@ void	raycast(t_c *cub);
 void	draw_line_dda(mlx_image_t *img, float x0, float y0, float x1, float y1, uint32_t color);
 bool	collision(t_c *cub, float x, float y);
 bool	is_wall(t_c *cub, float x, float y);
-void	draw_3d(t_c *cub, int x, float final_dist);
+void	draw_3d(t_c *cub, int x, float final_dist, bool vertical_hit, float hit_x, float hit_y);
 
 //draw_utils.c
 void	clear_img(mlx_image_t *img);

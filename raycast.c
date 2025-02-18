@@ -5,6 +5,19 @@ static void	check_horizontal_hit(t_c *cub, float ra, float *hx, float *hy, float
 static void	check_vertical_hit(t_c *cub, float ra, float *vx, float *vy, float *distanceV);
 
 /**
+ * Converts BGRA (MLX texture) to RGBA for mlx_put_pixel.
+ */
+static uint32_t	convert_color(uint32_t color)
+{
+	uint8_t *channels = (uint8_t *)&color;
+	return ((uint32_t)channels[2] << 8 |  // Red
+			(uint32_t)channels[1] << 16 |  // Green
+			(uint32_t)channels[0] << 24  |  // Blue
+			(uint32_t)channels[3]);       // Alpha
+}
+
+
+/**
  * Renders the rays for the field of view (FOV).
  * Each ray is calculated per screen pixel using angle increments.
  */
@@ -41,13 +54,13 @@ void	raycast(t_c *cub)
 		{
 			draw_line_dda(cub->ray_img, cub->player.pos.x, cub->player.pos.y, vx, vy, 0x00FF00FF);
 			distanceV *= cos(cub->player.angle - ra);
-			draw_3d(cub, r, distanceV);
+			draw_3d(cub, r, distanceV, true, vx, vy);
 		}
 		else
 		{
 			draw_line_dda(cub->ray_img, cub->player.pos.x, cub->player.pos.y, hx, hy, 0x00FF00FF);
 			distanceH *= cos(cub->player.angle - ra);
-			draw_3d(cub, r, distanceH);
+			draw_3d(cub, r, distanceH, false, hx, hy);
 		}
 
 		// Increment angle for next ray
@@ -233,7 +246,7 @@ bool	is_wall(t_c *cub, float x, float y)
 	return (cub->map[mapY][mapX] == '1');
 }
 
-void	draw_3d(t_c *cub, int x, float final_dist)
+void	draw_3d(t_c *cub, int x, float final_dist, bool vertical_hit, float hit_x, float hit_y)
 {
 	float	line_height;
 	float	draw_start;
@@ -248,15 +261,50 @@ void	draw_3d(t_c *cub, int x, float final_dist)
 	if (draw_end >= HEIGHT)
 		draw_end = HEIGHT - 1;
 
- 	// Draw Ceiling
-	//for (int y = 0; y < draw_start; y++)
-	//	mlx_put_pixel(cub->world_img, x, y, cub->roof);
+	// Select wall texture based on hit direction
+	mlx_image_t *texture = NULL;
+	if (vertical_hit)
+	{
+		texture = (hit_x < cub->player.pos.x) ? cub->texture[2].img : cub->texture[3].img; // WEST or EAST
+	}
+	else
+	{
+		texture = (hit_y < cub->player.pos.y) ? cub->texture[0].img : cub->texture[1].img; // NORTH or SOUTH
+	}
 
-	// Draw Wall (Currently solid color, can add textures later)
+	if (!texture || !texture->pixels)
+	{
+		printf("Error: Texture image not loaded.\n");
+		return;
+	}
+
+	// Determine texture column (x-coordinate on the texture)
+	float fx = fmod(hit_x, TILE_SIZE);
+	float fy = fmod(hit_y, TILE_SIZE);
+	uint32_t tex_x = (vertical_hit) ? (int)(fy / TILE_SIZE * texture->width) : (int)(fx / TILE_SIZE * texture->width);
+	if (tex_x >= texture->width) tex_x = texture->width - 1;
+
+	// Texture vertical scaling
+	float step = (float)texture->height / line_height;
+	float tex_pos = 0.0;
+
+	// Draw Wall with Texture Mapping
 	for (int y = draw_start; y < draw_end; y++)
-		mlx_put_pixel(cub->world_img, x, y, 0xFF0000FF); // Red walls
+	{
+		uint32_t tex_y = (int)tex_pos % texture->height;
+		tex_pos += step;
+
+		// Get pixel color and convert to RGBA
+		uint32_t color = convert_color(((uint32_t *)texture->pixels)[tex_y * texture->width + tex_x]);
+
+		mlx_put_pixel(cub->world_img, x, y, color);
+	}
+
+	// Draw Ceiling
+	for (int y = 0; y < draw_start; y++)
+		mlx_put_pixel(cub->world_img, x, y, cub->roof);
 
 	// Draw Floor
-	//for (int y = draw_end; y < HEIGHT; y++)
-	//	mlx_put_pixel(cub->world_img, x, y, 0xFF00FFFF);
+	for (int y = draw_end; y < HEIGHT; y++)
+		mlx_put_pixel(cub->world_img, x, y, cub->floor);
 }

@@ -21,40 +21,51 @@
 # include <stdbool.h>
 # include <unistd.h>
 
-# define WIDTH 512
-# define HEIGHT 512
+# define WIDTH 2048
+# define HEIGHT 2048
+# define TILE_SIZE 32
+# define PLAYER_SIZE 16
+# define PI 3.141592
+# define MOVE_SPEED 0.1
+# define ROT_SPEED 0.05
+# define DEGREE 0.0174533 //one degree in radians
 
 typedef struct s_texture
 {
 	mlx_image_t		*img;
-	int				width;
+	int				width; 
 	int				height;
 }					t_texture;
 
 typedef struct s_vector
 {
-	double			x;
-	double			y;
+	float			x;
+	float			y;
 }					t_vector;
 
-typedef struct s_char
+typedef struct s_player
 {
+	mlx_image_t		*player_img;
 	t_vector		pos;
+	t_vector		delta_pos;
 	t_vector		dir;
+	float			angle;
 	t_vector		plane;
-}					t_char;
+}					t_player;
 
 typedef struct s_cub3d
 {
 	mlx_t			*mlx;
 	mlx_image_t		*img;
+	mlx_image_t		*ray_img;
+	mlx_image_t		*world_img;
 	char			**map;
 	int				map_width;
 	int				map_height;
 	t_texture		texture[4];
 	int				roof;
 	int				floor;
-	t_char			player;
+	t_player		player;
 }					t_c;
 
 void	er_ex(t_c cub, char *str);
@@ -64,5 +75,18 @@ bool	parse_line(char *trim_line, t_c *cub, mlx_texture_t *texture,
 bool	valid_map(t_c *cub, int p_count, int x, int y);
 void	create_player(t_c *cub, int x, int y);
 bool	map_err(char *line, int fd);
+
+//draw_map.c
+void	draw_map2D(t_c *cub);
+
+//raycast.c
+void	raycast(t_c *cub);
+void	draw_line_dda(mlx_image_t *img, float x0, float y0, float x1, float y1, uint32_t color);
+bool	collision(t_c *cub, float x, float y);
+bool	is_wall(t_c *cub, float x, float y);
+void	draw_3d(t_c *cub, int x, float final_dist, bool vertical_hit, float hit_x, float hit_y);
+
+//draw_utils.c
+void	clear_img(mlx_image_t *img);
 
 #endif

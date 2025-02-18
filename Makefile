@@ -11,8 +11,10 @@
 # **************************************************************************** #
 
 NAME				= cub3d
+DEBUG_NAME			= cub3d_debug
 CC					= gcc
-CFLAGS				= -g -fsanitize=address -o -Wall -Wextra -Werror -I./MLX42/include -I./libft -I.
+CFLAGS				= -Wall -Wextra -Werror -I./MLX42/include -I./libft -I.
+DFLAGS				= -g -fsanitize=address
 LDFLAGS				= -L./MLX42/build -lmlx42 -L./libft -lft -lglfw -ldl -pthread -lm
 
 # -g -fsanitize=address -o 
@@ -28,8 +30,12 @@ SRCS				= main.c \
 					parse_line.c \
 					valid_map.c \
 					create_player.c \
+					draw_map.c \
+					raycast.c \
+					draw_utils.c
 					
 OBJS				= $(SRCS:.c=.o)
+DEBUG_OBJS			= $(SRCS:.c=.debug.o)
 
 all: clone $(LIBFT_LIB) $(MLX_LIB) $(NAME)
 
@@ -57,20 +63,28 @@ $(NAME): $(OBJS) $(LIBFT_LIB) $(MLX_LIB)
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LDFLAGS)
 	@echo "\033[36m[READY] $(NAME)\033[0m"
 
+$(DEBUG_NAME): $(DEBUG_OBJS) $(LIBFT_LIB) $(MLX_LIB)
+	$(CC) $(CFLAGS) $(DFLAGS) -o $(DEBUG_NAME) $(DEBUG_OBJS) $(LDFLAGS)
+	@echo "\033[36m[READY] $(DEBUG_NAME)\033[0m"
+
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 	@echo "\033[32m[OK] $@\033[0m"
 
+%.debug.o: %.c
+	$(CC) $(CFLAGS) $(DFLAGS) -c $< -o $@
+	@echo "\033[32m[OK] $@\033[0m"
+
 clean:
-	rm -f $(OBJS)
+	rm -f $(OBJS) $(DEBUG_NAME)
 	@make -C $(LIBFT_DIR) clean
 	@echo "\033[31mCleanup object files\033[0m"
 
 fclean: clean
-	rm -f $(NAME)
+	rm -f $(NAME) $(DEBUG_NAME)
 	@make -C $(LIBFT_DIR) fclean
 	@echo "\033[31mFull cleanup completed (MLX42 and libft folders retained)\033[0m"
 
 re: fclean all
 
-.PHONY: all clone clean fclean re
+.PHONY: all clone clean fclean re debug

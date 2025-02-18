@@ -12,30 +12,34 @@
 
 #include "cub3d.h"
 
-static	t_vector	init_dir(char view)
+float	init_angle(char view)
 {
 	if (view == 'N')
-		return ((t_vector){0, -1});
+		return (1.5 * PI);
 	if (view == 'S')
-		return ((t_vector){0, 1});
+		return (0.5 * PI);
 	if (view == 'W')
-		return ((t_vector){-1, 0});
+		return (PI);
 	if (view == 'E')
-		return ((t_vector){1, 0});
-	return ((t_vector){0, 0});
+		return (0);
+	return (0);
 }
 
-static t_vector	init_plane(char view)
+
+void drawPlayer(t_c *cub)
 {
-	if (view == 'N')
-		return ((t_vector){0.66, 0});
-	if (view == 'S')
-		return ((t_vector){-0.66, 0});
-	if (view == 'W')
-		return ((t_vector){0, -0.66});
-	if (view == 'E')
-		return ((t_vector){0, 0.66});
-	return ((t_vector){0, 0});
+    cub->player.player_img = mlx_new_image(cub->mlx, PLAYER_SIZE, PLAYER_SIZE);
+    uint32_t y = 0;
+	while (y < PLAYER_SIZE)
+	{
+		uint32_t x = 0;
+		while (x < PLAYER_SIZE)
+		{
+			mlx_put_pixel(cub->player.player_img, x, y, 0xFF0000FF);
+			x++;
+		}
+		y++;
+	}	
 }
 
 void	create_player(t_c *cub, int x, int y)
@@ -47,10 +51,11 @@ void	create_player(t_c *cub, int x, int y)
 		{
 			if (ft_strchr("NSWE", cub->map[y][x]))
 			{
-				cub->player.pos = (t_vector){x + 0.5, y + 0.5};
-				cub->player.dir = init_dir(cub->map[y][x]);
-				cub->player.plane = init_plane(cub->map[y][x]);
+				cub->player.pos = (t_vector){x + 0.25, y + 0.25};
+				cub->player.angle = init_angle(cub->map[y][x]);
+				cub->player.delta_pos = (t_vector){cos(cub->player.angle) * 5, sin(cub->player.angle) * 5};
 				cub->map[y][x] = '0';
+				drawPlayer(cub);
 				return ;
 			}
 			x++;

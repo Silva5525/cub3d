@@ -74,7 +74,6 @@ void	raycast(t_c *cub)
  */
 static void	check_horizontal_hit(t_c *cub, float ra, float *hx, float *hy, float *distanceH)
 {
-	int		dof;
 	float	rx, ry, xo, yo;
 	float	aTan;
 
@@ -106,22 +105,27 @@ static void	check_horizontal_hit(t_c *cub, float ra, float *hx, float *hy, float
 	}
 
 	// Cast horizontal ray until wall hit
-	dof = 0;
-	while (dof < 8)
+	while (true)
 	{
-		int mx = (int)(rx) >> 5;
-		int my = (int)(ry) >> 5;
-		if (mx >= 0 && mx < cub->map_width && my >= 0 && my < cub->map_height &&
-			cub->map[my][mx] == '1')
+		int mx = (int)(rx / TILE_SIZE);
+		int my = (int)(ry / TILE_SIZE);
+
+		// Stop if out of map bounds
+		if (mx < 0 || my < 0 || mx >= cub->map_width || my >= cub->map_height)
+			break;
+
+		// Stop if wall is hit
+		if (cub->map[my][mx] == '1')
 		{
 			*hx = rx;
 			*hy = ry;
 			*distanceH = distance(cub->player.pos.x, cub->player.pos.y, rx, ry);
 			break;
 		}
+
+		// Move to next intersection
 		rx += xo;
 		ry += yo;
-		dof++;
 	}
 }
 
@@ -130,7 +134,6 @@ static void	check_horizontal_hit(t_c *cub, float ra, float *hx, float *hy, float
  */
 static void	check_vertical_hit(t_c *cub, float ra, float *vx, float *vy, float *distanceV)
 {
-	int		dof;
 	float	rx, ry, xo, yo;
 	float	nTan;
 
@@ -162,22 +165,27 @@ static void	check_vertical_hit(t_c *cub, float ra, float *vx, float *vy, float *
 	}
 
 	// Cast vertical ray until wall hit
-	dof = 0;
-	while (dof < 8)
+	while (true)
 	{
-		int mx = (int)(rx) >> 5;
-		int my = (int)(ry) >> 5;
-		if (mx >= 0 && mx < cub->map_width && my >= 0 && my < cub->map_height &&
-			cub->map[my][mx] == '1')
+		int mx = (int)(rx / TILE_SIZE);
+		int my = (int)(ry / TILE_SIZE);
+
+		// Stop if out of map bounds
+		if (mx < 0 || my < 0 || mx >= cub->map_width || my >= cub->map_height)
+			break;
+
+		// Stop if wall is hit
+		if (cub->map[my][mx] == '1')
 		{
 			*vx = rx;
 			*vy = ry;
 			*distanceV = distance(cub->player.pos.x, cub->player.pos.y, rx, ry);
 			break;
 		}
+
+		// Move to next intersection
 		rx += xo;
 		ry += yo;
-		dof++;
 	}
 }
 

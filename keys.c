@@ -6,7 +6,7 @@
 /*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 11:57:45 by wdegraf           #+#    #+#             */
-/*   Updated: 2025/02/19 11:59:03 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/02/19 12:14:48 by wdegraf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ void	key_hook(void *param)
 		mlx_close_window(cub->mlx);
 	key_rotations(cub);
 	key_position(cub, delta, (t_vector){0, 0});
+	key_movements(cub, delta);
 	clear_img(cub->ray_img);
 	clear_img(cub->world_img);
 	raycast(cub);

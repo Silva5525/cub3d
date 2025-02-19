@@ -1,4 +1,4 @@
-#include "../cub3d.h"
+#include "cub3d.h"
 
 float	distance(float x1, float y1, float x2, float y2);
 static void	check_horizontal_hit(t_c *cub, float ra, float *hx, float *hy, float *distanceH);

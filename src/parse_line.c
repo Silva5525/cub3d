@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../cub3d.h"
+#include "cub3d.h"
 
 static bool	line_err(char *writ)
 {
@@ -19,7 +19,7 @@ static bool	line_err(char *writ)
 	return (false);
 }
 
-static int	parse_color(char *line, int *color, int i, int out)
+static int	parse_color(char *line, int *color, int i, int *out)
 {
 
 	color = (int *)malloc(sizeof(int) * 3);
@@ -41,8 +41,9 @@ static int	parse_color(char *line, int *color, int i, int out)
 				return (free(color), -1);
 		i++;
 	}
-	out = (255 << 24) | (color[0] << 16) | (color[1] << 8) | color[2];
-	return (free(color), out);
+	*out = (color[0] << 24) | (color[1] << 16) | (color[2] << 8) | 255;
+	free(color);
+	return (0);
 }
 
 
@@ -104,8 +105,8 @@ bool	parse_line(char *trim_line, t_c *cub, mlx_texture_t *texture,
 			return (true);
 	}
 	if (ft_strncmp(trim_line, "F", 1) == 0)
-		return (cub->floor = parse_color(trim_line + 2, color, 0, 0), true);
+		return (parse_color(trim_line + 2, color, 0, &cub->floor) == 0);
 	if (ft_strncmp(trim_line, "C", 1) == 0)
-		return (cub->roof = parse_color(trim_line + 2, color, 0, 0), true);
+		return (parse_color(trim_line + 2, color, 0, &cub->roof) == 0);
 	return (line_err("Invalid line.\n"));
 }

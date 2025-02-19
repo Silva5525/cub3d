@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../cub3d.h"
 
 static int	map_line_helper(bool map, char *line, t_c *cub, ssize_t size)
 {

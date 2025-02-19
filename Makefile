@@ -44,13 +44,19 @@ clone:
 		make; \
 	fi
 
-$(MLX_LIB): clone
+$(MLX_LIB):
+	@if [ ! -d $(LOCAL_DIR) ]; then \
+		echo "\033[32mCloning and building MLX42\033[0m"; \
+		git clone $(REPO_URL) $(LOCAL_DIR); \
+	fi
 	@echo "\033[32mBuilding MLX42 library\033[0m"
 	@cd $(LOCAL_DIR) && cmake -B build && cd build && make
 
 $(LIBFT_LIB):
-	@echo "\033[32mBuilding libft library\033[0m"
-	@make -C $(LIBFT_DIR)
+	@if [ ! -f $(LIBFT_LIB) ]; then \
+		echo "\033[32mBuilding libft library\033[0m"; \
+		make -C $(LIBFT_DIR); \
+	fi
 
 $(NAME): $(OBJS) $(LIBFT_LIB) $(MLX_LIB)
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LDFLAGS)
@@ -82,9 +88,10 @@ clean:
 	@echo "\033[31mCleanup object files\033[0m"
 
 fclean: clean
+	rm -rf $(LOCAL_DIR)/build
 	rm -f $(NAME) $(DEBUG_NAME) $(VALGRIND_DEBUG_NAME)
 	@make -C $(LIBFT_DIR) fclean
-	@echo "\033[31mFull cleanup completed (MLX42 and libft folders retained)\033[0m"
+	@echo "\033[31mFull cleanup completed\033[0m"
 
 re: fclean all
 

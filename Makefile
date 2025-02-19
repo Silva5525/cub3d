@@ -25,17 +25,7 @@ MLX_LIB				= $(LOCAL_DIR)/build/libmlx42.a
 LIBFT_DIR			= ./libft
 LIBFT_LIB			= $(LIBFT_DIR)/libft.a
 
-SRCS				=	main.c \
-						parse_map.c \
-						parse_line.c \
-						valid_map.c \
-						create_player.c \
-						draw_map.c \
-						raycast.c \
-						draw_utils.c \
-						keys.c \
-						err_handling.c
-
+SRCS				= $(wildcard src/*.c)
 OBJS				= $(SRCS:.c=.o)
 DEBUG_OBJS			= $(SRCS:.c=.debug.o)
 VALGRIND_DEBUG_OBJS	= $(SRCS:.c=.valgrind_debug.o)

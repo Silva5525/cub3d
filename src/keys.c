@@ -12,8 +12,9 @@
 
 #include "cub3d.h"
 
-static void	key_position(t_c *cub, t_vector delta, t_vector position)
+static void	key_position(t_c *cub, t_vector delta)
 {
+	t_vector position;
 	if (delta.x != 0 || delta.y != 0)
 	{
 		position
@@ -25,7 +26,6 @@ static void	key_position(t_c *cub, t_vector delta, t_vector position)
 		{
 			delta.x = 0;
 			delta.y = 0;
-			printf("Collision! Stopping movement.\n");
 		}
 		else
 		{
@@ -59,27 +59,27 @@ static void	key_rotations(t_c *cub)
 	}
 }
 
-static void	key_movements(t_c *cub, t_vector delta)
+static void	key_movements(t_c *cub, t_vector *delta)
 {
 	if (mlx_is_key_down(cub->mlx, MLX_KEY_W))
 	{
-		delta.x += cos(cub->player.angle) * 4;
-		delta.y += sin(cub->player.angle) * 4;
+		delta->x += cos(cub->player.angle) * 4;
+		delta->y += sin(cub->player.angle) * 4;
 	}
 	if (mlx_is_key_down(cub->mlx, MLX_KEY_S))
 	{
-		delta.x -= cos(cub->player.angle) * 4;
-		delta.y -= sin(cub->player.angle) * 4;
+		delta->x -= cos(cub->player.angle) * 4;
+		delta->y -= sin(cub->player.angle) * 4;
 	}
 	if (mlx_is_key_down(cub->mlx, MLX_KEY_A))
 	{
-		delta.x += sin(cub->player.angle) * 4;
-		delta.y -= cos(cub->player.angle) * 4;
+		delta->x += sin(cub->player.angle) * 4;
+		delta->y -= cos(cub->player.angle) * 4;
 	}
 	if (mlx_is_key_down(cub->mlx, MLX_KEY_D))
 	{
-		delta.x -= sin(cub->player.angle) * 4;
-		delta.y += cos(cub->player.angle) * 4;
+		delta->x -= sin(cub->player.angle) * 4;
+		delta->y += cos(cub->player.angle) * 4;
 	}
 }
 
@@ -87,14 +87,14 @@ void	key_hook(void *param)
 {
 	t_c			*cub;
 	t_vector	delta;
-
+	
 	cub = (t_c *)param;
 	delta = (t_vector){0, 0};
 	if (mlx_is_key_down(cub->mlx, MLX_KEY_ESCAPE))
-		mlx_close_window(cub->mlx);
+	mlx_close_window(cub->mlx);
 	key_rotations(cub);
-	key_position(cub, delta, (t_vector){0, 0});
-	key_movements(cub, delta);
+	key_movements(cub, &delta);
+	key_position(cub, delta);
 	clear_img(cub->ray_img);
 	clear_img(cub->world_img);
 	raycast(cub);

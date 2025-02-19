@@ -6,7 +6,7 @@
 /*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 14:31:32 by wdegraf           #+#    #+#             */
-/*   Updated: 2025/02/18 22:22:51 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/02/19 12:05:08 by wdegraf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,12 @@
 # define PI 3.141592
 # define MOVE_SPEED 0.1
 # define ROT_SPEED 0.05
-# define DEGREE 0.0174533 //one degree in radians
+# define DEGREE 0.0174533
 
 typedef struct s_texture
 {
 	mlx_image_t		*img;
-	int				width; 
+	int				width;
 	int				height;
 }					t_texture;
 
@@ -82,13 +82,23 @@ void	draw_map2d(t_c *cub, int x, int y, int ty);
 
 //raycast.c
 void	raycast(t_c *cub);
-void	draw_line_dda(mlx_image_t *img, float x0, float y0, float x1, float y1, uint32_t color);
+void	draw_line_dda(mlx_image_t *img, float x0, float y0,
+			float x1, float y1, uint32_t color);
 bool	collision(t_c *cub, float x, float y);
 bool	is_wall(t_c *cub, float x, float y);
-void	draw_3d(t_c *cub, int x, float final_dist, bool vertical_hit, float hit_x, float hit_y);
+void	draw_3d(t_c *cub, int x, float final_dist,
+			bool vertical_hit, float hit_x, float hit_y);
 
 //draw_utils.c
 void	clear_img(mlx_image_t *img);
 void	draw_floor_and_ceiling(t_c *cub);
+
+//keys.c
+void	key_hook(void *param);
+
+//err_handling.c
+void	er_ex(t_c cub, char *str);
+void	free_mlx(t_c *cub, int i);
+void	delete_if(t_c *cub);
 
 #endif

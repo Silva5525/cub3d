@@ -6,7 +6,7 @@
 #    By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/06 14:57:16 by wdegraf           #+#    #+#              #
-#    Updated: 2025/02/18 21:45:27 by wdegraf          ###   ########.fr        #
+#    Updated: 2025/02/19 12:06:18 by wdegraf          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,9 @@ SRCS				=	main.c \
 						create_player.c \
 						draw_map.c \
 						raycast.c \
-						draw_utils.c
+						draw_utils.c \
+						keys.c \
+						err_handling.c
 
 OBJS				= $(SRCS:.c=.o)
 DEBUG_OBJS			= $(SRCS:.c=.debug.o)

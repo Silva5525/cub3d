@@ -37,7 +37,6 @@ void	free_mlx(t_c *cub, int i)
 	}
 	if (cub->map)
 		free(cub->map);
-
 	while (cub->texture[i].img)
 	{
 		if (cub->texture[i].img)

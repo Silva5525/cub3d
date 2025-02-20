@@ -25,7 +25,6 @@ float	init_angle(char view)
 	return (0);
 }
 
-
 void	draw_player(t_c *cub)
 {
 	uint32_t	x;

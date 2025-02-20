@@ -21,7 +21,6 @@ static bool	line_err(char *writ)
 
 static int	parse_color(char *line, int *color, int i, int *out)
 {
-
 	color = (int *)malloc(sizeof(int) * 3);
 	if (!color)
 		return (-1);
@@ -45,7 +44,6 @@ static int	parse_color(char *line, int *color, int i, int *out)
 	free(color);
 	return (0);
 }
-
 
 static int	identifier(char *trim_line, char **path)
 {

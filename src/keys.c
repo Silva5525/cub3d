@@ -14,7 +14,8 @@
 
 static void	key_position(t_c *cub, t_vector delta)
 {
-	t_vector position;
+	t_vector	position;
+
 	if (delta.x != 0 || delta.y != 0)
 	{
 		position
@@ -23,10 +24,7 @@ static void	key_position(t_c *cub, t_vector delta)
 			cub->player.pos.y + delta.y
 		};
 		if (collision(cub, position.x, position.y))
-		{
-			delta.x = 0;
-			delta.y = 0;
-		}
+			delta = (t_vector){0, 0};
 		else
 		{
 			cub->player.pos = position;
@@ -87,15 +85,15 @@ void	key_hook(void *param)
 {
 	t_c			*cub;
 	t_vector	delta;
-	
+
 	cub = (t_c *)param;
 	delta = (t_vector){0, 0};
 	if (mlx_is_key_down(cub->mlx, MLX_KEY_ESCAPE))
-	mlx_close_window(cub->mlx);
+		mlx_close_window(cub->mlx);
 	key_rotations(cub);
 	key_movements(cub, &delta);
 	key_position(cub, delta);
 	clear_img(cub->ray_img);
 	clear_img(cub->world_img);
-	raycast(cub);
+	ray(cub);
 }

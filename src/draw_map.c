@@ -79,3 +79,14 @@ void	draw_floor_and_ceiling(t_c *cub)
 		y++;
 	}
 }
+
+void	draw_3d(t_c *cub, bool vertical_hit, t_hit *hit, int r)
+{
+	t_wall	wall;
+
+	wall.texture = NULL;
+	calculate_wall_dimensions(hit->distance, &wall);
+	select_texture(cub, &wall.texture, hit->vec, vertical_hit);
+	wall.tex_x = select_texture_x(wall.texture, hit->vec, vertical_hit);
+	draw_wall_slice(cub, r, &wall);
+}

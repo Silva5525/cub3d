@@ -89,7 +89,9 @@ void	key_hook(void *param)
 	cub = (t_c *)param;
 	delta = (t_vector){0, 0};
 	if (mlx_is_key_down(cub->mlx, MLX_KEY_ESCAPE))
+	{
 		mlx_close_window(cub->mlx);
+	}
 	key_rotations(cub);
 	key_movements(cub, &delta);
 	key_position(cub, delta);

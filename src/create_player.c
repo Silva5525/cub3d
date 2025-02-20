@@ -65,5 +65,5 @@ void	create_player(t_c *cub, int x, int y)
 		}
 		y++;
 	}
-	er_ex(*cub, "No player found in map\n");
+	er_ex(cub, "No player found in map\n");
 }

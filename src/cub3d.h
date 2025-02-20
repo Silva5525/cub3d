@@ -119,8 +119,8 @@ void		select_texture(t_c *cub, mlx_image_t **texture,
 uint32_t	select_texture_x(mlx_image_t *texture, t_vector vec, bool hit);
 //----------------------err_handling.c----------------------
 void		delete_if(t_c *cub);
-void		free_mlx(t_c *cub, int i);
-void		er_ex(t_c cub, char *str);
+void		free_mlx(t_c *cub);
+void		er_ex(t_c *cub, char *str);
 
 //----------------------parse_line.c------------------------
 bool		parse_line(char *trim_line, t_c *cub,

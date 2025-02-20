@@ -32,21 +32,21 @@ static void	init_map_and_player2(t_c *cub)
 static void	init_map_and_player(char *file, t_c *cub)
 {
 	if (!ft_str_end_with(file, ".cub"))
-		er_ex(*cub, "Map needs a .cub extension.\n");
+		er_ex(cub, "Map needs a .cub extension.\n");
 	if (!scan_map(file, cub))
-		er_ex(*cub, "Invalid map file.\n");
+		er_ex(cub, "Invalid map file.\n");
 	cub->img = mlx_new_image(cub->mlx, WIDTH, HEIGHT);
 	if (!cub->img)
-		er_ex(*cub, "mlx_new_image\n");
+		er_ex(cub, "mlx_new_image\n");
 	cub->mini_map = mlx_new_image(cub->mlx, WIDTH, HEIGHT);
 	if (!cub->mini_map)
-		er_ex(*cub, "mlx_new_minimap_image\n");
+		er_ex(cub, "mlx_new_minimap_image\n");
 	cub->ray_img = mlx_new_image(cub->mlx, WIDTH, HEIGHT);
 	if (!cub->ray_img)
-		er_ex(*cub, "mlx_new_ray_image\n");
+		er_ex(cub, "mlx_new_ray_image\n");
 	cub->world_img = mlx_new_image(cub->mlx, WIDTH, HEIGHT);
 	if (!cub->world_img)
-		er_ex(*cub, "mlx_new_world_image\n");
+		er_ex(cub, "mlx_new_world_image\n");
 	init_map_and_player2(cub);
 }
 
@@ -59,11 +59,12 @@ int	main(int argc, char **argv)
 	ft_memset(&cub, 0, sizeof(t_c));
 	cub.mlx = mlx_init(WIDTH, HEIGHT, "cub3d", true);
 	if (!cub.mlx)
-		er_ex(cub, "mlx_init");
+		er_ex(&cub, "mlx_init");
 	init_map_and_player(argv[1], &cub);
 	mlx_loop_hook(cub.mlx, key_hook, &cub);
 	mlx_loop(cub.mlx);
-	free_mlx(&cub, 0);
-	write(1, "Game Over.\n", 11);
+	cub.mlx = NULL;
+	free_mlx(&cub);
+	write(1, "Game Closing.\n", 15);
 	return (EXIT_SUCCESS);
 }

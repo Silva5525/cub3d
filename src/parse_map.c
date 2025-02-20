@@ -101,6 +101,11 @@ static bool	map_line(int fd, t_c *cub, ssize_t size, bool map)
 	}
 	cub->map = ft_realloc(cub->map, sizeof(char *) * size,
 			sizeof(char *) * (size + 1));
+	if (!cub->map)
+	{
+		printf("ERROR: Memory allocation failed for map\n");  // ✅ Debugging
+		exit(EXIT_FAILURE);
+	}
 	cub->map[size] = NULL;
 	return (true);
 }
@@ -111,9 +116,13 @@ bool	scan_map(char *file, t_c *cub)
 
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
-		er_ex(*cub, "Could not open file\n");
+		er_ex(cub, "Could not open file\n");
 	if (!map_line(fd, cub, 0, false))
+	{
+		cub->map = NULL;
+		free_mlx(cub);
 		return (map_err(NULL, fd));
+	}
 	close(fd);
 	valid_map(cub, 0, 0, 0);
 	return (true);

@@ -1,0 +1,1135 @@
+Saving contents of collision_detection.c
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   collision_detection.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mgering <mgering@student.42heilbronn.de    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/20 15:50:15 by mgering           #+#    #+#             */
+/*   Updated: 2025/02/20 15:50:15 by mgering          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3d.h"
+
+bool	collision(t_c *cub, float x, float y)
+{
+	int	map_x;
+	int	map_y;
+
+	map_x = (int)(x / TILE_SIZE);
+	map_y = (int)(y / TILE_SIZE);
+	if (map_x < 0 || map_y < 0 || map_x
+		>= cub->map_width || map_y >= cub->map_height)
+	{
+		return (true);
+	}
+	if (is_wall(cub, x -(PLAYER_SIZE / 2), y - (PLAYER_SIZE / 2))
+		|| is_wall(cub, x + (PLAYER_SIZE / 2), y - (PLAYER_SIZE / 2))
+		|| is_wall(cub, x - (PLAYER_SIZE / 2), y + (PLAYER_SIZE / 2))
+		|| is_wall(cub, x + (PLAYER_SIZE / 2), y + (PLAYER_SIZE / 2)))
+	{
+		return (true);
+	}
+	return (false);
+}
+
+bool	is_wall(t_c *cub, float x, float y)
+{
+	int	map_x;
+	int	map_y;
+
+	map_x = (int)(x / TILE_SIZE);
+	map_y = (int)(y / TILE_SIZE);
+	if (map_x < 0 || map_y < 0 || map_x >= cub->map_width
+		|| map_y >= cub->map_height)
+	{
+		return (true);
+	}
+	return (cub->map[map_y][map_x] == '1');
+}
+
+
+
+Saving contents of create_player.c
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   create_player.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/14 16:42:04 by wdegraf           #+#    #+#             */
+/*   Updated: 2025/02/18 22:44:07 by wdegraf          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3d.h"
+
+float	init_angle(char view)
+{
+	if (view == 'N')
+		return (1.5 * PI);
+	if (view == 'S')
+		return (0.5 * PI);
+	if (view == 'W')
+		return (PI);
+	if (view == 'E')
+		return (0);
+	return (0);
+}
+
+/* void	draw_player(t_c *cub)
+{
+	uint32_t	x;
+	uint32_t	y;
+
+	cub->player.player_img = mlx_new_image(cub->mlx, PLAYER_SIZE, PLAYER_SIZE);
+	y = 0;
+	while (y < PLAYER_SIZE)
+	{
+		x = 0;
+		while (x < PLAYER_SIZE)
+		{
+			mlx_put_pixel(cub->player.player_img, x, y, 0xFF0000FF);
+			x++;
+		}
+		y++;
+	}
+} */
+
+void	create_player(t_c *cub, int x, int y)
+{
+	while (cub->map[y])
+	{
+		x = 0;
+		while (cub->map[y][x])
+		{
+			if (ft_strchr("NSWE", cub->map[y][x]))
+			{
+				cub->player.pos = (t_vector){x + 0.25, y + 0.25};
+				cub->player.angle = init_angle(cub->map[y][x]);
+				cub->player.delta_pos = (t_vector){cos(cub->player.angle) * 5,
+					sin(cub->player.angle) * 5};
+				cub->map[y][x] = '0';
+				//draw_player(cub);
+				return ;
+			}
+			x++;
+		}
+		y++;
+	}
+	er_ex(cub, "No player found in map\n");
+}
+
+
+
+Saving contents of draw_map.c
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   draw_map.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/18 22:06:15 by wdegraf           #+#    #+#             */
+/*   Updated: 2025/02/18 22:36:41 by wdegraf          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3d.h"
+
+/* static uint32_t	color_32(t_c *cub, int x, int y)
+{
+	uint32_t	color;
+
+	if (cub->map[y][x] == '1')
+		color = 0x0000009E;
+	else
+		color = 0x80809E9E;
+	return (color);
+} */
+
+/* void	draw_map2d(t_c *cub, int x, int y, int ty)
+{
+	int			tx;
+	uint32_t	color;
+
+	while (cub->map[y] != NULL)
+	{
+		x = 0;
+		while (cub->map[y][x] != '\0' && cub->map[y][x] != '\n')
+		{
+			color = color_32(cub, x, y);
+			tx = 0;
+			while (tx < TILE_SIZE)
+			{
+				ty = 0;
+				while (ty < TILE_SIZE)
+				{
+					mlx_put_pixel(cub->mini_map, x * TILE_SIZE + tx,
+						y * TILE_SIZE + ty, color);
+					ty++;
+				}
+				tx++;
+			}
+			x++;
+		}
+		y++;
+	}
+} */
+
+void	draw_floor_and_ceiling(t_c *cub)
+{
+	int	x;
+	int	y;
+
+	y = 0;
+	while (y < (HEIGHT / 2))
+	{
+		x = 0;
+		while (x < WIDTH)
+		{
+			mlx_put_pixel(cub->img, x, y, cub->roof);
+			x++;
+		}
+		y++;
+	}
+	while (y < HEIGHT)
+	{
+		x = 0;
+		while (x < WIDTH)
+		{
+			mlx_put_pixel(cub->img, x, y, cub->floor);
+			x++;
+		}
+		y++;
+	}
+}
+
+void	draw_3d(t_c *cub, bool vertical_hit, t_hit *hit, int r)
+{
+	t_wall	wall;
+
+	wall.texture = NULL;
+	calculate_wall_dimensions(hit->distance, &wall);
+	select_texture(cub, &wall.texture, hit->vec, vertical_hit);
+	wall.tex_x = select_texture_x(cub,wall.texture, hit->vec, vertical_hit);
+	draw_wall_slice(cub, r, &wall);
+}
+
+
+
+Saving contents of draw_utils.c
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   draw_utils.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/18 22:05:12 by wdegraf           #+#    #+#             */
+/*   Updated: 2025/02/18 22:05:15 by wdegraf          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3d.h"
+
+void	clear_img(mlx_image_t *img)
+{
+	ft_memset(img->pixels, 0, img->width * img->height * sizeof(uint32_t));
+}
+
+float	distance(float x1, float y1, float x2, float y2)
+{
+	return (sqrtf((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)));
+}
+
+void	draw_line_dda(mlx_image_t *ray_img, t_vector start_vec,
+	t_vector end_vec, uint32_t color)
+{
+	int		i;
+	float	dx;
+	float	dy;
+	float	steps;
+
+	i = 0;
+	dx = end_vec.x - start_vec.x;
+	dy = end_vec.y - start_vec.y;
+	if (fabs(dx) > fabs(dy))
+		steps = fabs(dx);
+	else
+		steps = fabs(dy);
+	while (i <= steps)
+	{
+		mlx_put_pixel(ray_img, (int)round(start_vec.x),
+			(int)round(start_vec.y), color);
+		start_vec.x += dx / steps;
+		start_vec.y += dy / steps;
+		i++;
+	}
+}
+
+uint32_t	convert_color(uint32_t color)
+{
+	uint8_t	*channels;
+
+	channels = (uint8_t *)&color;
+	return ((uint32_t)channels[2] << 8
+		| (uint32_t)channels[1] << 16
+		| (uint32_t)channels[0] << 24
+		| (uint32_t)channels[3]);
+}
+
+
+
+Saving contents of err_handling.c
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   err_handling.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/19 12:01:59 by wdegraf           #+#    #+#             */
+/*   Updated: 2025/02/19 12:02:14 by wdegraf          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3d.h"
+
+void	delete_if(t_c *cub)
+{
+	if (!cub || !cub->mlx)
+		return ;
+	//if (cub->player.player_img)
+	//	mlx_delete_image(cub->mlx, cub->player.player_img);
+	if (cub->world_img)
+		mlx_delete_image(cub->mlx, cub->world_img);
+	//if (cub->ray_img)
+	//	mlx_delete_image(cub->mlx, cub->ray_img);
+	//if (cub->mini_map)
+	//	mlx_delete_image(cub->mlx, cub->mini_map);
+	if (cub->img)
+		mlx_delete_image(cub->mlx, cub->img);
+}
+
+void	free_mlx(t_c *cub)
+{
+	delete_if(cub);
+	while (cub->map_height > 0)
+	{
+		cub->map_height--;
+		if (cub->map[cub->map_height])
+			free(cub->map[cub->map_height]);
+	}
+	if (cub->map)
+		free(cub->map);
+	if (cub->mlx)
+	{
+		printf("Terminating MLX.../n");
+		mlx_terminate(cub->mlx);
+		cub->mlx = NULL;
+	}
+}
+
+void	er_ex(t_c *cub, char *str)
+{
+	free_mlx(cub);
+	write(2, "Error\n", 6);
+	write(2, str, ft_strlen(str));
+	exit(EXIT_FAILURE);
+}
+
+
+
+Saving contents of keys.c
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   keys.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/19 11:57:45 by wdegraf           #+#    #+#             */
+/*   Updated: 2025/02/19 12:14:48 by wdegraf          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3d.h"
+
+static void	try_move(t_c *cub, t_vector delta);
+
+static void	key_rotations(t_c *cub)
+{
+	if (mlx_is_key_down(cub->mlx, MLX_KEY_RIGHT)
+		|| mlx_is_key_down(cub->mlx, MLX_KEY_E))
+	{
+		cub->player.angle += 0.05;
+		if (cub->player.angle > 2 * PI)
+			cub->player.angle -= 2 * PI;
+	}
+	if (mlx_is_key_down(cub->mlx, MLX_KEY_LEFT)
+		|| mlx_is_key_down(cub->mlx, MLX_KEY_Q))
+	{
+		cub->player.angle -= 0.05;
+		if (cub->player.angle < 0)
+			cub->player.angle += 2 * PI;
+	}
+}
+
+static void	key_movements(t_c *cub, t_vector *delta)
+{
+	if (mlx_is_key_down(cub->mlx, MLX_KEY_W))
+	{
+		delta->x += cos(cub->player.angle) * 4;
+		delta->y += sin(cub->player.angle) * 4;
+	}
+	if (mlx_is_key_down(cub->mlx, MLX_KEY_S))
+	{
+		delta->x -= cos(cub->player.angle) * 4;
+		delta->y -= sin(cub->player.angle) * 4;
+	}
+	if (mlx_is_key_down(cub->mlx, MLX_KEY_A))
+	{
+		delta->x += sin(cub->player.angle) * 4;
+		delta->y -= cos(cub->player.angle) * 4;
+	}
+	if (mlx_is_key_down(cub->mlx, MLX_KEY_D))
+	{
+		delta->x -= sin(cub->player.angle) * 4;
+		delta->y += cos(cub->player.angle) * 4;
+	}
+}
+
+void	key_hook(void *param)
+{
+	t_c			*cub;
+	t_vector	delta;
+
+	cub = (t_c *)param;
+	delta = (t_vector){0, 0};
+	if (mlx_is_key_down(cub->mlx, MLX_KEY_ESCAPE))
+		mlx_close_window(cub->mlx);
+	key_rotations(cub);
+	key_movements(cub, &delta);
+	try_move(cub, delta);
+	//clear_img(cub->ray_img);
+	clear_img(cub->world_img);
+	ray(cub);
+}
+
+static void	try_move(t_c *cub, t_vector delta)
+{
+	t_vector	pos;
+	t_vector	new_pos;
+
+	pos = cub->player.pos;
+	new_pos = (t_vector){pos.x + delta.x, pos.y + delta.y};
+	if (!collision(cub, new_pos.x, new_pos.y))
+	{
+		cub->player.pos = new_pos;
+		//cub->player.player_img->instances[0].x = new_pos.x - (PLAYER_SIZE / 2);
+		//cub->player.player_img->instances[0].y = new_pos.y - (PLAYER_SIZE / 2);
+		return ;
+	}
+	new_pos = (t_vector){pos.x + delta.x, pos.y};
+	if (!collision(cub, new_pos.x, new_pos.y))
+	{
+		cub->player.pos = new_pos;
+		//cub->player.player_img->instances[0].x = new_pos.x - (PLAYER_SIZE / 2);
+		//cub->player.player_img->instances[0].y = new_pos.y - (PLAYER_SIZE / 2);
+		return ;
+	}
+	new_pos = (t_vector){pos.x, pos.y + delta.y};
+	if (!collision(cub, new_pos.x, new_pos.y))
+		cub->player.pos = new_pos;
+	//cub->player.player_img->instances[0].x = new_pos.x - (PLAYER_SIZE / 2);
+	//cub->player.player_img->instances[0].y = new_pos.y - (PLAYER_SIZE / 2);
+}
+
+
+
+Saving contents of main.c
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/06 17:55:10 by wdegraf           #+#    #+#             */
+/*   Updated: 2025/02/19 12:05:42 by wdegraf          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3d.h"
+
+static void	init_map_and_player2(t_c *cub)
+{
+	mlx_image_to_window(cub->mlx, cub->img, 0, 0);
+	mlx_image_to_window(cub->mlx, cub->world_img, 0, 0);
+	//mlx_image_to_window(cub->mlx, cub->mini_map, 0, 0);
+	draw_floor_and_ceiling(cub);
+	//draw_map2d(cub, 0, 0, 0);
+	create_player(cub, 0, 0);
+	//mlx_image_to_window(cub->mlx, cub->player.player_img, cub->player.pos.x
+	//	* TILE_SIZE, cub->player.pos.y * TILE_SIZE);
+	//mlx_image_to_window(cub->mlx, cub->ray_img, 0, 0);
+	// cub->player.pos.x = cub->player.player_img->instances[0].x
+	// 	+ (PLAYER_SIZE / 2);
+	// cub->player.pos.y = cub->player.player_img->instances[0].y
+	// 	+ (PLAYER_SIZE / 2);
+}
+
+static void	init_map_and_player(char *file, t_c *cub)
+{
+	if (!ft_str_end_with(file, ".cub"))
+		er_ex(cub, "Map needs a .cub extension.\n");
+	if (!scan_map(file, cub))
+		er_ex(cub, "Invalid map file.\n");
+	cub->img = mlx_new_image(cub->mlx, WIDTH, HEIGHT);
+	if (!cub->img)
+		er_ex(cub, "mlx_new_image\n");
+	//cub->mini_map = mlx_new_image(cub->mlx, WIDTH, HEIGHT);
+	//if (!cub->mini_map)
+	//	er_ex(cub, "mlx_new_minimap_image\n");
+	//cub->ray_img = mlx_new_image(cub->mlx, WIDTH, HEIGHT);
+	//if (!cub->ray_img)
+	//	er_ex(cub, "mlx_new_ray_image\n");
+	cub->world_img = mlx_new_image(cub->mlx, WIDTH, HEIGHT);
+	if (!cub->world_img)
+		er_ex(cub, "mlx_new_world_image\n");
+	init_map_and_player2(cub);
+}
+
+int	main(int argc, char **argv)
+{
+	t_c		cub;
+
+	if (argc != 2)
+		return (write(2, "Usage: ./cub3D <map_file.cub>\n", 30), EXIT_FAILURE);
+	ft_memset(&cub, 0, sizeof(t_c));
+	cub.mlx = mlx_init(WIDTH, HEIGHT, "cub3d", true);
+	if (!cub.mlx)
+		er_ex(&cub, "mlx_init");
+	init_map_and_player(argv[1], &cub);
+	mlx_loop_hook(cub.mlx, key_hook, &cub);
+	mlx_loop(cub.mlx);
+	free_mlx(&cub);
+	write(1, "Game Over.\n", 11);
+	return (EXIT_SUCCESS);
+}
+
+
+
+Saving contents of parse_line.c
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_line.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/08 15:35:58 by wdegraf           #+#    #+#             */
+/*   Updated: 2025/02/18 14:49:34 by wdegraf          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3d.h"
+
+static bool	line_err(char *writ)
+{
+	write(2, "Error\n", 6);
+	write(2, writ, ft_strlen(writ));
+	return (false);
+}
+
+static int	parse_color(char *line, int *color, int i, int *out)
+{
+	color = (int *)malloc(sizeof(int) * 3);
+	if (!color)
+		return (-1);
+	while (i < 3)
+	{
+		color[i] = 0;
+		while (*line == ' ')
+			line++;
+		if (*line < '0' || *line > '9')
+			return (free(color), -1);
+		while (*line >= '0' && *line <= '9')
+			color[i] = color[i] * 10 + (*line++ - '0');
+		if (color[i] < 0 || color[i] > 255)
+			return (free(color), -1);
+		if (i < 2)
+			if (*line++ != ',')
+				return (free(color), -1);
+		i++;
+	}
+	*out = (color[0] << 24) | (color[1] << 16) | (color[2] << 8) | 255;
+	free(color);
+	return (0);
+}
+
+static int	identifier(char *trim_line, char **path)
+{
+	if (trim_line == NULL)
+		return (-1);
+	if (ft_strncmp(trim_line, "NO ", 3) == 0)
+		return (*path = &trim_line[3], 0);
+	if (ft_strncmp(trim_line, "SO ", 3) == 0)
+		return (*path = &trim_line[3], 1);
+	if (ft_strncmp(trim_line, "WE ", 3) == 0)
+		return (*path = &trim_line[3], 2);
+	if (ft_strncmp(trim_line, "EA ", 3) == 0)
+		return (*path = &trim_line[3], 3);
+	return (4);
+}
+
+static bool	direction_line(char *path, t_c *cub,
+			mlx_texture_t *texture, int i)
+{
+	int		len;
+
+	len = strlen(path);
+	while (path[len - 1] == ' ')
+		len--;
+	path[len] = '\0';
+	while (*path == ' ')
+		path++;
+	if (!ft_access_read_write(path, O_RDONLY))
+		return (line_err("Texture path not found.\n"));
+	texture = mlx_load_png(path);
+	if (texture == NULL)
+		return (line_err("Texture not found.\n"));
+	cub->texture[i].img = mlx_texture_to_image(cub->mlx, texture);
+	mlx_delete_texture(texture);
+	if (!cub->texture[i].img)
+		return (line_err("mlx_texture_to_image failed.\n"));
+	return (true);
+}
+
+bool	parse_line(char *trim_line, t_c *cub, mlx_texture_t *texture,
+			char *path)
+{
+	int		i;
+	int		*color;
+
+	color = NULL;
+	if (!cub->mlx)
+		return (line_err("No mlx context in parse_line.\n"));
+	i = identifier(trim_line, &path);
+	if (i == -1)
+		return (line_err("identifier in parse_line failed.\n"));
+	if (path)
+	{
+		if (!direction_line(path, cub, texture, i))
+			return (line_err("direction_line failed.\n"));
+		else
+			return (true);
+	}
+	if (ft_strncmp(trim_line, "F", 1) == 0)
+		return (parse_color(trim_line + 2, color, 0, &cub->floor) == 0);
+	if (ft_strncmp(trim_line, "C", 1) == 0)
+		return (parse_color(trim_line + 2, color, 0, &cub->roof) == 0);
+	return (line_err("Invalid line.\n"));
+}
+
+
+
+Saving contents of parse_map.c
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_map.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/06 19:24:10 by wdegraf           #+#    #+#             */
+/*   Updated: 2025/02/18 22:18:01 by wdegraf          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3d.h"
+
+static int	map_line_helper(bool map, char *line, t_c *cub, ssize_t size)
+{
+	size_t	len;
+
+	if (map)
+	{
+		len = ft_strlen(line);
+		while (len > 0 && (line[len - 1] == ' ' || line[len - 1] == '\n'))
+			line[--len] = '\0';
+		cub->map = ft_realloc(cub->map, sizeof(char *) * size,
+				sizeof(char *) * (size + 2));
+		if (!cub->map)
+			return (-1);
+		cub->map[size] = ft_strdup(line);
+		if (!cub->map[size])
+			return (-1);
+		size++;
+		cub->map[size] = NULL;
+		cub->map_height++;
+		if ((int)len > cub->map_width)
+			cub->map_width = (int)len;
+	}
+	else
+		if (!parse_line(line, cub, NULL, NULL))
+			return (write(2, "Error.\n In parse_line.\n", 23), -1);
+	return (size);
+}
+
+/// @brief Removes the newline character from the end of the line.
+/// and only adds a space if the last character is a map character (wall check).
+static char	*end_and_newl_char(char *line)
+{
+	size_t	len;
+	char	*out;
+
+	len = ft_strlen(line);
+	if (len > 0 && line[len - 1] == '\n')
+		line[len - 1] = '\0';
+	if (len > 0 && ft_strchr("01NSEW", line[len - 1]))
+	{
+		out = ft_strjoin(line, " ");
+		free(line);
+		return (out);
+	}
+	return (line);
+}
+
+static int	map_line2(char *raw_line, t_c *cub, ssize_t size, bool map)
+{
+	char	*line;
+
+	line = end_and_newl_char(raw_line);
+	if (!line)
+		return (-1);
+	if (ft_strspn(line, "01NSEW ") == ft_strlen(line))
+		map = true;
+	else if (map)
+		return (free(line), -1);
+	size = map_line_helper(map, line, cub, size);
+	if (size == -1)
+		return (write(2, "MAP_LINE_HELPER\n", 16), free(line), false);
+	free(line);
+	line = NULL;
+	return (size);
+}
+
+static bool	map_line(int fd, t_c *cub, ssize_t size, bool map)
+{
+	char	*raw_line;
+
+	while (1)
+	{
+		raw_line = get_next_line(fd);
+		if (raw_line == NULL)
+		{
+			free(raw_line);
+			break ;
+		}
+		if (raw_line[0] == '\n')
+		{
+			free(raw_line);
+			continue ;
+		}
+		size = map_line2(raw_line, cub, size, map);
+		if (size == -1)
+			return (false);
+	}
+	cub->map = ft_realloc(cub->map, sizeof(char *) * size,
+			sizeof(char *) * (size + 1));
+	cub->map[size] = NULL;
+	return (true);
+}
+
+bool	scan_map(char *file, t_c *cub)
+{
+	int		fd;
+
+	fd = open(file, O_RDONLY);
+	if (fd < 0)
+		er_ex(cub, "Could not open file\n");
+	if (!map_line(fd, cub, 0, false))
+		return (map_err(NULL, fd));
+	close(fd);
+	valid_map(cub, 0, 0, 0);
+	return (true);
+}
+
+
+
+Saving contents of raycast.c
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   raycast.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mgering <mgering@student.42heilbronn.de    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/20 15:50:15 by mgering           #+#    #+#             */
+/*   Updated: 2025/02/20 15:50:15 by mgering          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3d.h"
+
+static void		vertical_hit(t_c *cub, t_hit *hit, t_ray *hit_v, int r);
+static void		horizontal_hit(t_c *cub, t_hit *hit, t_ray *hit_h, int r);
+
+void	ray(t_c *cub)
+{
+	int			r;
+	t_hit		hit;
+	t_ray		hit_h;
+	t_ray		hit_v;
+
+	hit_h.distance_vec = &(float){1000000};
+	hit_v.distance_vec = &(float){1000000};
+	hit.ra = cub->player.angle - (30 * DEGREE);
+	r = 0;
+	while (r < WIDTH)
+	{
+		hit.ra = fmod(hit.ra + 2 * PI, 2 * PI);
+		check_horizontal_hit(cub, hit.ra, &hit_h);
+		check_vertical_hit(cub, hit.ra, &hit_v);
+		if (*(hit_v.distance_vec) < *(hit_h.distance_vec))
+			vertical_hit(cub, &hit, &hit_v, r);
+		else
+			horizontal_hit(cub, &hit, &hit_h, r);
+		hit.ra += (60 * DEGREE) / WIDTH;
+		r++;
+	}
+}
+
+static void	vertical_hit(t_c *cub, t_hit *hit, t_ray *hit_v, int r)
+{
+	hit->vec = hit_v->vec;
+	hit->distance = *(hit_v->distance_vec);
+	//draw_line_dda(cub->ray_img, cub->player.pos, hit->vec, 0x00FF009A);
+	hit->distance *= cos(cub->player.angle - hit->ra);
+	draw_3d(cub, true, hit, r);
+}
+
+static void	horizontal_hit(t_c *cub, t_hit *hit, t_ray *hit_h, int r)
+{
+	hit->vec = hit_h->vec;
+	hit->distance = *(hit_h->distance_vec);
+	//draw_line_dda(cub->ray_img, cub->player.pos, hit->vec, 0x00FF009A);
+	hit->distance *= cos(cub->player.angle - hit->ra);
+	draw_3d(cub, false, hit, r);
+}
+
+void	calculate_wall_dimensions(float final_dist, t_wall *wall)
+{
+	if (final_dist > 0.1)
+		wall->wall_height = (TILE_SIZE * HEIGHT) / final_dist;
+	else
+		wall->wall_height = (TILE_SIZE * HEIGHT) / 0.1;
+	wall->draw_start = (HEIGHT / 2) - (wall->wall_height / 2);
+	if (wall->draw_start < 0)
+		wall->draw_start = 0;
+	wall->draw_end = (HEIGHT / 2) + (wall->wall_height / 2);
+	if (wall->draw_end >= HEIGHT)
+		wall->draw_end = HEIGHT - 1;
+}
+
+
+
+Saving contents of raycast_utils.c
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   raycast_utils.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mgering <mgering@student.42heilbronn.de    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/20 15:50:15 by mgering           #+#    #+#             */
+/*   Updated: 2025/02/20 15:50:15 by mgering          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3d.h"
+
+static void	check_until_wall(t_c *cub, t_ray *ray)
+{
+	int	mx;
+	int	my;
+
+	while (true)
+	{
+		mx = (int)(ray->intersect.x / TILE_SIZE);
+		my = (int)(ray->intersect.y / TILE_SIZE);
+		if (mx < 0 || my < 0 || mx >= cub->map_width || my >= cub->map_height)
+			break ;
+		if (cub->map[my] && cub->map[my][mx] == '1')
+		{
+			ray->vec.x = ray->intersect.x;
+			ray->vec.y = ray->intersect.y;
+			*ray->distance_vec = distance(cub->player.pos.x,
+					cub->player.pos.y, ray->intersect.x, ray->intersect.y);
+			break ;
+		}
+		ray->intersect.x += ray->step.x;
+		ray->intersect.y += ray->step.y;
+	}
+}
+
+static void	check_up_down(t_c *cub, t_ray *ray, float ra)
+{
+	float	a_tan;
+
+	a_tan = -1 / tan(ra);
+	if (ra > PI)
+	{
+		ray->intersect.y = (((int)cub->player.pos.y >> 5) << 5) - 0.0001;
+		ray->intersect.x = (cub->player.pos.y - ray->intersect.y)
+			* a_tan + cub->player.pos.x;
+		ray->step.y = -TILE_SIZE;
+		ray->step.x = -ray->step.y * a_tan;
+	}
+	else if (ra < PI)
+	{
+		ray->intersect.y = (((int)cub->player.pos.y >> 5) << 5) + TILE_SIZE;
+		ray->intersect.x = (cub->player.pos.y - ray->intersect.y)
+			* a_tan + cub->player.pos.x;
+		ray->step.y = TILE_SIZE;
+		ray->step.x = -ray->step.y * a_tan;
+	}
+	else
+	{
+		ray->intersect.x = cub->player.pos.x;
+		ray->intersect.y = cub->player.pos.y;
+		return ;
+	}
+}
+
+static void	check_left_right(t_c *cub, t_ray *ray, float ra)
+{
+	float	n_tan;
+
+	n_tan = -tan(ra);
+	if (ra > (PI / 2) && ra < (3 * PI / 2))
+	{
+		ray->intersect.x = (((int)cub->player.pos.x >> 5) << 5) - 0.0001;
+		ray->intersect.y = (cub->player.pos.x - ray->intersect.x)
+			* n_tan + cub->player.pos.y;
+		ray->step.x = -TILE_SIZE;
+		ray->step.y = -ray->step.x * n_tan;
+	}
+	else if (ra < (PI / 2) || ra > (3 * PI / 2))
+	{
+		ray->intersect.x = (((int)cub->player.pos.x >> 5) << 5) + TILE_SIZE;
+		ray->intersect.y = (cub->player.pos.x - ray->intersect.x)
+			* n_tan + cub->player.pos.y;
+		ray->step.x = TILE_SIZE;
+		ray->step.y = -ray->step.x * n_tan;
+	}
+	else
+	{
+		ray->intersect.x = cub->player.pos.x;
+		ray->intersect.y = cub->player.pos.y;
+		return ;
+	}
+}
+
+void	check_horizontal_hit(t_c *cub, float ra, t_ray *ray)
+{
+	*ray->distance_vec = 1000000;
+	ray->vec.x = cub->player.pos.x;
+	ray->vec.y = cub->player.pos.y;
+	check_up_down(cub, ray, ra);
+	check_until_wall(cub, ray);
+}
+
+void	check_vertical_hit(t_c *cub, float ra, t_ray *ray)
+{
+	*ray->distance_vec = 1000000;
+	ray->vec.x = cub->player.pos.x;
+	ray->vec.y = cub->player.pos.y;
+	check_left_right(cub, ray, ra);
+	check_until_wall(cub, ray);
+}
+
+
+
+Saving contents of texture_utils.c
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   texture_utils.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mgering <mgering@student.42heilbronn.de    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/20 15:50:15 by mgering           #+#    #+#             */
+/*   Updated: 2025/02/20 15:50:15 by mgering          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3d.h"
+
+void	select_texture(t_c *cub, mlx_image_t **texture,
+	t_vector vec, bool hit)
+{
+	if (hit)
+	{
+		if (vec.x < cub->player.pos.x)
+			*texture = cub->texture[2].img;
+		else
+			*texture = cub->texture[3].img;
+	}
+	else
+	{
+		if (vec.y < cub->player.pos.y)
+			*texture = cub->texture[0].img;
+		else
+			*texture = cub->texture[1].img;
+	}
+}
+
+uint32_t	select_texture_x(t_c *cub, mlx_image_t *texture,
+	t_vector vec, bool hit)
+{
+	uint32_t	tex_x;
+	float		fx;
+	float		fy;
+
+	fx = fmod(vec.x, TILE_SIZE);
+	fy = fmod(vec.y, TILE_SIZE);
+	if (hit)
+		tex_x = (int)(fy / TILE_SIZE * texture->width);
+	else
+		tex_x = (int)(fx / TILE_SIZE * texture->width);
+	if ((hit && vec.x < cub->player.pos.x)
+		|| (!hit && vec.y > cub->player.pos.y))
+		tex_x = texture->width - tex_x - 1;
+	if (tex_x >= texture->width)
+		tex_x = texture->width - 1;
+	return (tex_x);
+}
+
+static uint32_t	get_texture_color(t_wall *wall, uint32_t *tex_pixels,
+	float tex_pos)
+{
+	int	tex_y;
+
+	tex_y = (int)tex_pos;
+	if (tex_y >= (int)wall->texture->height)
+		tex_y = wall->texture->height - 1;
+	return (convert_color(tex_pixels[tex_y
+				* wall->texture->width + wall->tex_x]));
+}
+
+void	draw_wall_slice(t_c *cub, int x, t_wall *wall)
+{
+	uint32_t	*tex_pixels;
+	float		step;
+	float		tex_pos;
+	int			y;
+	uint32_t	color;
+
+	if (!wall->texture)
+		return ;
+	tex_pixels = (uint32_t *)wall->texture->pixels;
+	if (!tex_pixels)
+		return ;
+	if (wall->wall_height > 1)
+		step = (float)wall->texture->height / wall->wall_height;
+	else
+		step = 1;
+	tex_pos = (wall->draw_start - (HEIGHT / 2)
+			+ (wall->wall_height / 2)) * step;
+	y = wall->draw_start;
+	while (y < wall->draw_end)
+	{
+		color = get_texture_color(wall, tex_pixels, tex_pos);
+		mlx_put_pixel(cub->world_img, x, y++, color);
+		tex_pos += step;
+	}
+}
+
+
+
+Saving contents of valid_map.c
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   valid_map.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/09 16:04:05 by wdegraf           #+#    #+#             */
+/*   Updated: 2025/02/18 19:32:53 by wdegraf          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3d.h"
+
+bool	map_err(char *line, int fd)
+{
+	write(2, "Error\n", 6);
+	if (line)
+	{
+		write(2, line, ft_strlen(line));
+		free(line);
+	}
+	line = NULL;
+	if (fd)
+		close(fd);
+	return (false);
+}
+
+static bool	map_char(char c)
+{
+	return (c == '0' || c == '1' || c == 'N' || c == 'S'
+		|| c == 'E' || c == 'W' || c == ' ');
+}
+
+static bool	wall_surround(t_c *cub, int x, int y)
+{
+	return (cub->map[y - 1][x] != ' ' && cub->map[y + 1][x] != ' ' &&
+		cub->map[y][x - 1] != ' ' && cub->map[y][x + 1] != ' ');
+}
+
+static bool	wall_cells(t_c *cub, int x, int y)
+{
+	if (cub->map[y][x] != '1' && cub->map[y][x] != ' ')
+	{
+		if (y == 0 || cub->map[y + 1] == NULL || x == 0
+			|| cub->map[y][x + 1] == '\0')
+			return (ft_printf("Error\nMap is not enclosed at %d, %d\n",
+					x, y), false);
+		if (!wall_surround(cub, x, y))
+			return (ft_printf("Error\nMap is not surroundet at %d, %d\n",
+					x, y), false);
+	}
+	return (true);
+}
+
+bool	valid_map(t_c *cub, int p_count, int x, int y)
+{
+	while (cub->map[y])
+	{
+		x = 0;
+		while (cub->map[y][x])
+		{
+			if (!map_char(cub->map[y][x]))
+				return (ft_printf("Invalid character '%c' at (%d, %d)\n",
+						cub->map[y][x], x, y), false);
+			if (!wall_cells(cub, x, y))
+				return (ft_printf("Error at cell (%d, %d)\n", x, y), false);
+			if (ft_strchr("NSEW", cub->map[y][x]))
+				if (++p_count > 1)
+					return (write(2, "Error\nToo many players\n", 23), false);
+			x++;
+		}
+		y++;
+	}
+	return (p_count == 1);
+}
+
+
+

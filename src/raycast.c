@@ -44,7 +44,7 @@ static void	vertical_hit(t_c *cub, t_hit *hit, t_ray *hit_v, int r)
 {
 	hit->vec = hit_v->vec;
 	hit->distance = *(hit_v->distance_vec);
-	draw_line_dda(cub->ray_img, cub->player.pos, hit->vec, 0x00FF009A);
+	//draw_line_dda(cub->ray_img, cub->player.pos, hit->vec, 0x00FF009A);
 	hit->distance *= cos(cub->player.angle - hit->ra);
 	draw_3d(cub, true, hit, r);
 }
@@ -53,7 +53,7 @@ static void	horizontal_hit(t_c *cub, t_hit *hit, t_ray *hit_h, int r)
 {
 	hit->vec = hit_h->vec;
 	hit->distance = *(hit_h->distance_vec);
-	draw_line_dda(cub->ray_img, cub->player.pos, hit->vec, 0x00FF009A);
+	//draw_line_dda(cub->ray_img, cub->player.pos, hit->vec, 0x00FF009A);
 	hit->distance *= cos(cub->player.angle - hit->ra);
 	draw_3d(cub, false, hit, r);
 }

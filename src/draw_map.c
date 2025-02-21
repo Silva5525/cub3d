@@ -12,7 +12,7 @@
 
 #include "cub3d.h"
 
-static uint32_t	color_32(t_c *cub, int x, int y)
+/* static uint32_t	color_32(t_c *cub, int x, int y)
 {
 	uint32_t	color;
 
@@ -50,7 +50,7 @@ void	draw_map2d(t_c *cub, int x, int y, int ty)
 		}
 		y++;
 	}
-}
+} */
 
 void	draw_floor_and_ceiling(t_c *cub)
 {

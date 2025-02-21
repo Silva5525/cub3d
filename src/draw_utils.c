@@ -22,7 +22,7 @@ float	distance(float x1, float y1, float x2, float y2)
 	return (sqrtf((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)));
 }
 
-void	draw_line_dda(mlx_image_t *ray_img, t_vector start_vec,
+/* void	draw_line_dda(mlx_image_t *ray_img, t_vector start_vec,
 	t_vector end_vec, uint32_t color)
 {
 	int		i;
@@ -45,7 +45,7 @@ void	draw_line_dda(mlx_image_t *ray_img, t_vector start_vec,
 		start_vec.y += dy / steps;
 		i++;
 	}
-}
+} */
 
 uint32_t	convert_color(uint32_t color)
 {

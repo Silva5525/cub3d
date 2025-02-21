@@ -83,9 +83,9 @@ typedef struct s_cub3d
 {
 	mlx_t			*mlx;
 	mlx_image_t		*img;
-	mlx_image_t		*ray_img;
+	//mlx_image_t		*ray_img;
 	mlx_image_t		*world_img;
-	mlx_image_t		*mini_map;
+	//mlx_image_t		*mini_map;
 	char			**map;
 	int				map_width;
 	int				map_height;
@@ -96,7 +96,6 @@ typedef struct s_cub3d
 }					t_c;
 
 //void		draw_minimap(t_c *cub);
-void		pad_map(t_c *cub);
 
 //----------------------main.c------------------------------
 int			main(int argc, char **argv);

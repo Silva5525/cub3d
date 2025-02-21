@@ -83,21 +83,21 @@ static void	try_move(t_c *cub, t_vector delta)
 	if (!collision(cub, new_pos.x, new_pos.y))
 	{
 		cub->player.pos = new_pos;
-		cub->player.player_img->instances[0].x = new_pos.x - (PLAYER_SIZE / 2);
-		cub->player.player_img->instances[0].y = new_pos.y - (PLAYER_SIZE / 2);
+		//cub->player.player_img->instances[0].x = new_pos.x - (PLAYER_SIZE / 2);
+		//cub->player.player_img->instances[0].y = new_pos.y - (PLAYER_SIZE / 2);
 		return ;
 	}
 	new_pos = (t_vector){pos.x + delta.x, pos.y};
 	if (!collision(cub, new_pos.x, new_pos.y))
 	{
 		cub->player.pos = new_pos;
-		cub->player.player_img->instances[0].x = new_pos.x - (PLAYER_SIZE / 2);
-		cub->player.player_img->instances[0].y = new_pos.y - (PLAYER_SIZE / 2);
+		//cub->player.player_img->instances[0].x = new_pos.x - (PLAYER_SIZE / 2);
+		//cub->player.player_img->instances[0].y = new_pos.y - (PLAYER_SIZE / 2);
 		return ;
 	}
 	new_pos = (t_vector){pos.x, pos.y + delta.y};
 	if (!collision(cub, new_pos.x, new_pos.y))
 		cub->player.pos = new_pos;
-	cub->player.player_img->instances[0].x = new_pos.x - (PLAYER_SIZE / 2);
-	cub->player.player_img->instances[0].y = new_pos.y - (PLAYER_SIZE / 2);
+	//cub->player.player_img->instances[0].x = new_pos.x - (PLAYER_SIZE / 2);
+	//cub->player.player_img->instances[0].y = new_pos.y - (PLAYER_SIZE / 2);
 }

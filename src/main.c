@@ -15,8 +15,6 @@
 static void	init_map_and_player2(t_c *cub)
 {
 	mlx_image_to_window(cub->mlx, cub->img, 0, 0);
-	mlx_image_to_window(cub->mlx, cub->world_img, 0, 0);
-	draw_floor_and_ceiling(cub);
 	init_player(cub, 0, 0);
 	cub->player.pos.x = cub->player.pos.x * TILE_SIZE
 		+ (PLAYER_SIZE / 2);
@@ -33,9 +31,6 @@ static void	init_map_and_player(char *file, t_c *cub)
 	cub->img = mlx_new_image(cub->mlx, WIDTH, HEIGHT);
 	if (!cub->img)
 		er_ex(cub, "mlx_new_image\n");
-	cub->world_img = mlx_new_image(cub->mlx, WIDTH, HEIGHT);
-	if (!cub->world_img)
-		er_ex(cub, "mlx_new_world_image\n");
 	init_map_and_player2(cub);
 }
 

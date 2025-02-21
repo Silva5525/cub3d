@@ -12,34 +12,6 @@
 
 #include "cub3d.h"
 
-void	draw_floor_and_ceiling(t_c *cub)
-{
-	int	x;
-	int	y;
-
-	y = 0;
-	while (y < (HEIGHT / 2))
-	{
-		x = 0;
-		while (x < WIDTH)
-		{
-			mlx_put_pixel(cub->img, x, y, cub->roof);
-			x++;
-		}
-		y++;
-	}
-	while (y < HEIGHT)
-	{
-		x = 0;
-		while (x < WIDTH)
-		{
-			mlx_put_pixel(cub->img, x, y, cub->floor);
-			x++;
-		}
-		y++;
-	}
-}
-
 void	draw_3d(t_c *cub, bool vertical_hit, t_hit *hit, int r)
 {
 	t_wall	wall;

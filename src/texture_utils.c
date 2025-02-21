@@ -66,14 +66,24 @@ static uint32_t	get_texture_color(t_wall *wall, uint32_t *tex_pixels,
 
 void	draw_wall_slice(t_c *cub, int x, t_wall *wall)
 {
-	uint32_t	*tex_pixels;
-	float		step;
-	float		tex_pos;
 	int			y;
-	uint32_t	color;
 
-	if (!wall->texture)
-		return ;
+	y = 0;
+	while (y < wall->draw_start)
+		mlx_put_pixel(cub->img, x, y++, cub->roof);
+	if (wall->texture)
+		draw_wall_tex(cub, wall, x, &y);
+	while (y < HEIGHT)
+		mlx_put_pixel(cub->img, x, y++, cub->floor);
+}
+
+void	draw_wall_tex(t_c *cub, t_wall *wall, int x, int *y)
+{
+	float		tex_pos;
+	float		step;
+	uint32_t	color;
+	uint32_t	*tex_pixels;
+
 	tex_pixels = (uint32_t *)wall->texture->pixels;
 	if (!tex_pixels)
 		return ;
@@ -83,11 +93,10 @@ void	draw_wall_slice(t_c *cub, int x, t_wall *wall)
 		step = 1;
 	tex_pos = (wall->draw_start - (HEIGHT / 2)
 			+ (wall->wall_height / 2)) * step;
-	y = wall->draw_start;
-	while (y < wall->draw_end)
+	while (*y < wall->draw_end)
 	{
 		color = get_texture_color(wall, tex_pixels, tex_pos);
-		mlx_put_pixel(cub->world_img, x, y++, color);
+		mlx_put_pixel(cub->img, x, (*y)++, color);
 		tex_pos += step;
 	}
 }

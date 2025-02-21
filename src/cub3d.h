@@ -82,7 +82,6 @@ typedef struct s_cub3d
 {
 	mlx_t			*mlx;
 	mlx_image_t		*img;
-	mlx_image_t		*world_img;
 	char			**map;
 	int				map_width;
 	int				map_height;
@@ -116,7 +115,7 @@ void		select_texture(t_c *cub, mlx_image_t **texture,
 				t_vector vec, bool hit);
 uint32_t	select_texture_x(t_c *cub, mlx_image_t *texture, t_vector vec, bool hit);
 void		draw_wall_slice(t_c *cub, int x, t_wall *wall);
-
+void		draw_wall_tex(t_c *cub, t_wall *wall, int x, int *y);
 
 //----------------------err_handling.c----------------------
 void		delete_if(t_c *cub);

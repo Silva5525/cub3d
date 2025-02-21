@@ -89,6 +89,6 @@ void	key_hook(void *param)
 	key_rotations(cub);
 	key_movements(cub, &delta);
 	try_move(cub, delta);
-	clear_img(cub->world_img);
+	clear_img(cub->img);
 	ray(cub);
 }

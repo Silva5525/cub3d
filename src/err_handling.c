@@ -16,8 +16,6 @@ void	delete_if(t_c *cub)
 {
 	if (!cub || !cub->mlx)
 		return ;
-	if (cub->world_img)
-		mlx_delete_image(cub->mlx, cub->world_img);
 	if (cub->img)
 		mlx_delete_image(cub->mlx, cub->img);
 }

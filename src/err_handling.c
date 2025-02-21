@@ -16,14 +16,8 @@ void	delete_if(t_c *cub)
 {
 	if (!cub || !cub->mlx)
 		return ;
-	if (cub->player.player_img)
-		mlx_delete_image(cub->mlx, cub->player.player_img);
 	if (cub->world_img)
 		mlx_delete_image(cub->mlx, cub->world_img);
-	// if (cub->ray_img)
-	// 	mlx_delete_image(cub->mlx, cub->ray_img);
-	// if (cub->mini_map)
-	// 	mlx_delete_image(cub->mlx, cub->mini_map);
 	if (cub->img)
 		mlx_delete_image(cub->mlx, cub->img);
 }

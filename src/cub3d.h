@@ -71,7 +71,6 @@ typedef struct s_texture
 
 typedef struct s_player
 {
-	mlx_image_t		*player_img;
 	t_vector		pos;
 	t_vector		delta_pos;
 	t_vector		dir;
@@ -83,9 +82,7 @@ typedef struct s_cub3d
 {
 	mlx_t			*mlx;
 	mlx_image_t		*img;
-	//mlx_image_t		*ray_img;
 	mlx_image_t		*world_img;
-	//mlx_image_t		*mini_map;
 	char			**map;
 	int				map_width;
 	int				map_height;
@@ -95,33 +92,32 @@ typedef struct s_cub3d
 	t_player		player;
 }					t_c;
 
-//void		draw_minimap(t_c *cub);
-
 //----------------------main.c------------------------------
 int			main(int argc, char **argv);
 
 //----------------------keys.c------------------------------
 void		key_hook(void *param);
 
-//----------------------create_player.c---------------------
+//----------------------init_player.c-----------------------
 float		init_angle(char view);
-void		draw_player(t_c *cub);
-void		create_player(t_c *cub, int x, int y);
+void		init_player(t_c *cub, int x, int y);
 
 //----------------------draw_map.c--------------------------
-void		draw_map2d(t_c *cub, int x, int y, int ty);
 void		draw_floor_and_ceiling(t_c *cub);
 void		draw_3d(t_c *cub, bool vertical_hit, t_hit *hit, int r);
 
 //----------------------draw_utils.c------------------------
 void		clear_img(mlx_image_t *img);
 float		distance(float x1, float y1, float x2, float y2);
-void		draw_line_dda(mlx_image_t *ray_img,
-				t_vector start_vec, t_vector end_vec, uint32_t color);
 uint32_t	convert_color(uint32_t color);
+
+//----------------------texture_utils.c---------------------
 void		select_texture(t_c *cub, mlx_image_t **texture,
 				t_vector vec, bool hit);
 uint32_t	select_texture_x(t_c *cub, mlx_image_t *texture, t_vector vec, bool hit);
+void		draw_wall_slice(t_c *cub, int x, t_wall *wall);
+
+
 //----------------------err_handling.c----------------------
 void		delete_if(t_c *cub);
 void		free_mlx(t_c *cub);
@@ -136,9 +132,6 @@ bool		scan_map(char *file, t_c *cub);
 
 //----------------------raycast.c---------------------------
 void		ray(t_c *cub);
-//void	vertical_hit(t_c *cub, t_vector vec, int *r, float distance,float ra);
-//void	horizontal_hit(t_c *cub, t_vector vec, int *r, float distance,float ra);
-void		draw_wall_slice(t_c *cub, int x, t_wall *wall);
 void		calculate_wall_dimensions(float final_dist, t_wall *wall);
 
 //----------------------raycast_utils.c---------------------

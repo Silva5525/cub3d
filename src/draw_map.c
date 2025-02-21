@@ -12,46 +12,6 @@
 
 #include "cub3d.h"
 
-/* static uint32_t	color_32(t_c *cub, int x, int y)
-{
-	uint32_t	color;
-
-	if (cub->map[y][x] == '1')
-		color = 0x0000009E;
-	else
-		color = 0x80809E9E;
-	return (color);
-}
-
-void	draw_map2d(t_c *cub, int x, int y, int ty)
-{
-	int			tx;
-	uint32_t	color;
-
-	while (cub->map[y] != NULL)
-	{
-		x = 0;
-		while (cub->map[y][x] != '\0' && cub->map[y][x] != '\n')
-		{
-			color = color_32(cub, x, y);
-			tx = 0;
-			while (tx < TILE_SIZE)
-			{
-				ty = 0;
-				while (ty < TILE_SIZE)
-				{
-					mlx_put_pixel(cub->mini_map, x * TILE_SIZE + tx,
-						y * TILE_SIZE + ty, color);
-					ty++;
-				}
-				tx++;
-			}
-			x++;
-		}
-		y++;
-	}
-} */
-
 void	draw_floor_and_ceiling(t_c *cub)
 {
 	int	x;

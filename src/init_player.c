@@ -25,26 +25,7 @@ float	init_angle(char view)
 	return (0);
 }
 
-void	draw_player(t_c *cub)
-{
-	uint32_t	x;
-	uint32_t	y;
-
-	cub->player.player_img = mlx_new_image(cub->mlx, PLAYER_SIZE, PLAYER_SIZE);
-	y = 0;
-	while (y < PLAYER_SIZE)
-	{
-		x = 0;
-		while (x < PLAYER_SIZE)
-		{
-			mlx_put_pixel(cub->player.player_img, x, y, 0xFF0000FF);
-			x++;
-		}
-		y++;
-	}
-}
-
-void	create_player(t_c *cub, int x, int y)
+void	init_player(t_c *cub, int x, int y)
 {
 	while (cub->map[y])
 	{
@@ -58,7 +39,6 @@ void	create_player(t_c *cub, int x, int y)
 				cub->player.delta_pos = (t_vector){cos(cub->player.angle) * 5,
 					sin(cub->player.angle) * 5};
 				cub->map[y][x] = '0';
-				//draw_player(cub);
 				return ;
 			}
 			x++;

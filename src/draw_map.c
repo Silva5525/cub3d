@@ -61,7 +61,7 @@ void	draw_floor_and_ceiling(t_c *cub)
 	while (y < (HEIGHT / 2))
 	{
 		x = 0;
-		while (x <= WIDTH)
+		while (x < WIDTH)
 		{
 			mlx_put_pixel(cub->img, x, y, cub->roof);
 			x++;
@@ -71,7 +71,7 @@ void	draw_floor_and_ceiling(t_c *cub)
 	while (y < HEIGHT)
 	{
 		x = 0;
-		while (x <= WIDTH)
+		while (x < WIDTH)
 		{
 			mlx_put_pixel(cub->img, x, y, cub->floor);
 			x++;
@@ -87,6 +87,6 @@ void	draw_3d(t_c *cub, bool vertical_hit, t_hit *hit, int r)
 	wall.texture = NULL;
 	calculate_wall_dimensions(hit->distance, &wall);
 	select_texture(cub, &wall.texture, hit->vec, vertical_hit);
-	wall.tex_x = select_texture_x(wall.texture, hit->vec, vertical_hit);
+	wall.tex_x = select_texture_x(cub, wall.texture, hit->vec, vertical_hit);
 	draw_wall_slice(cub, r, &wall);
 }

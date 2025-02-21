@@ -111,7 +111,7 @@ bool	scan_map(char *file, t_c *cub)
 
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
-		er_ex(*cub, "Could not open file\n");
+		er_ex(cub, "Could not open file\n");
 	if (!map_line(fd, cub, 0, false))
 		return (map_err(NULL, fd));
 	close(fd);

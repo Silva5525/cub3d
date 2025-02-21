@@ -23,6 +23,9 @@
 # define WIDTH 2048
 # define HEIGHT 1024
 # define TILE_SIZE 32
+# define MINIMAP_WIDTH 128
+# define MINIMAP_HEIGHT 256
+# define MINIMAP_TILE_SIZE 16
 # define PLAYER_SIZE 16
 # define PI 3.141592
 # define MOVE_SPEED 0.1
@@ -92,6 +95,9 @@ typedef struct s_cub3d
 	t_player		player;
 }					t_c;
 
+//void		draw_minimap(t_c *cub);
+void		pad_map(t_c *cub);
+
 //----------------------main.c------------------------------
 int			main(int argc, char **argv);
 
@@ -116,11 +122,11 @@ void		draw_line_dda(mlx_image_t *ray_img,
 uint32_t	convert_color(uint32_t color);
 void		select_texture(t_c *cub, mlx_image_t **texture,
 				t_vector vec, bool hit);
-uint32_t	select_texture_x(mlx_image_t *texture, t_vector vec, bool hit);
+uint32_t	select_texture_x(t_c *cub, mlx_image_t *texture, t_vector vec, bool hit);
 //----------------------err_handling.c----------------------
 void		delete_if(t_c *cub);
-void		free_mlx(t_c *cub, int i);
-void		er_ex(t_c cub, char *str);
+void		free_mlx(t_c *cub);
+void		er_ex(t_c *cub, char *str);
 
 //----------------------parse_line.c------------------------
 bool		parse_line(char *trim_line, t_c *cub,

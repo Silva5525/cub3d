@@ -12,32 +12,7 @@
 
 #include "cub3d.h"
 
-static void	key_position(t_c *cub, t_vector delta)
-{
-	t_vector	position;
-
-	if (delta.x != 0 || delta.y != 0)
-	{
-		position
-			= (t_vector){
-			cub->player.pos.x + delta.x,
-			cub->player.pos.y + delta.y
-		};
-		if (collision(cub, position.x, position.y))
-			delta = (t_vector){0, 0};
-		else
-		{
-			cub->player.pos = position;
-			if (cub->player.player_img && cub->player.player_img->instances)
-			{
-				cub->player.player_img->instances[0].x
-					= position.x - (PLAYER_SIZE / 2);
-				cub->player.player_img->instances[0].y
-					= position.y - (PLAYER_SIZE / 2);
-			}
-		}
-	}
-}
+static void	try_move(t_c *cub, t_vector delta);
 
 static void	key_rotations(t_c *cub)
 {
@@ -92,8 +67,37 @@ void	key_hook(void *param)
 		mlx_close_window(cub->mlx);
 	key_rotations(cub);
 	key_movements(cub, &delta);
-	key_position(cub, delta);
+	try_move(cub, delta);
 	clear_img(cub->ray_img);
 	clear_img(cub->world_img);
 	ray(cub);
+}
+
+static void	try_move(t_c *cub, t_vector delta)
+{
+	t_vector	pos;
+	t_vector	new_pos;
+
+	pos = cub->player.pos;
+	new_pos = (t_vector){pos.x + delta.x, pos.y + delta.y};
+	if (!collision(cub, new_pos.x, new_pos.y))
+	{
+		cub->player.pos = new_pos;
+		cub->player.player_img->instances[0].x = new_pos.x - (PLAYER_SIZE / 2);
+		cub->player.player_img->instances[0].y = new_pos.y - (PLAYER_SIZE / 2);
+		return ;
+	}
+	new_pos = (t_vector){pos.x + delta.x, pos.y};
+	if (!collision(cub, new_pos.x, new_pos.y))
+	{
+		cub->player.pos = new_pos;
+		cub->player.player_img->instances[0].x = new_pos.x - (PLAYER_SIZE / 2);
+		cub->player.player_img->instances[0].y = new_pos.y - (PLAYER_SIZE / 2);
+		return ;
+	}
+	new_pos = (t_vector){pos.x, pos.y + delta.y};
+	if (!collision(cub, new_pos.x, new_pos.y))
+		cub->player.pos = new_pos;
+	cub->player.player_img->instances[0].x = new_pos.x - (PLAYER_SIZE / 2);
+	cub->player.player_img->instances[0].y = new_pos.y - (PLAYER_SIZE / 2);
 }

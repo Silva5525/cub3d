@@ -14,6 +14,8 @@
 
 void	delete_if(t_c *cub)
 {
+	if (!cub || !cub->mlx)
+		return ;
 	if (cub->player.player_img)
 		mlx_delete_image(cub->mlx, cub->player.player_img);
 	if (cub->world_img)
@@ -26,10 +28,10 @@ void	delete_if(t_c *cub)
 		mlx_delete_image(cub->mlx, cub->img);
 }
 
-void	free_mlx(t_c *cub, int i)
+void	free_mlx(t_c *cub)
 {
 	delete_if(cub);
-	while (--cub->map_height)
+	while (cub->map_height > 0)
 	{
 		cub->map_height--;
 		if (cub->map[cub->map_height])
@@ -37,19 +39,17 @@ void	free_mlx(t_c *cub, int i)
 	}
 	if (cub->map)
 		free(cub->map);
-	while (cub->texture[i].img)
-	{
-		if (cub->texture[i].img)
-			mlx_delete_image(cub->mlx, cub->texture[i].img);
-		i++;
-	}
 	if (cub->mlx)
+	{
+		printf("Terminating MLX.../n");
 		mlx_terminate(cub->mlx);
+		cub->mlx = NULL;
+	}
 }
 
-void	er_ex(t_c cub, char *str)
+void	er_ex(t_c *cub, char *str)
 {
-	free_mlx(&cub, 0);
+	free_mlx(cub);
 	write(2, "Error\n", 6);
 	write(2, str, ft_strlen(str));
 	exit(EXIT_FAILURE);

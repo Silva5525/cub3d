@@ -23,7 +23,7 @@ static void	check_until_wall(t_c *cub, t_ray *ray)
 		my = (int)(ray->intersect.y / TILE_SIZE);
 		if (mx < 0 || my < 0 || mx >= cub->map_width || my >= cub->map_height)
 			break ;
-		if (cub->map[my][mx] == '1')
+		if (cub->map[my] && cub->map[my][mx] == '1')
 		{
 			ray->vec.x = ray->intersect.x;
 			ray->vec.y = ray->intersect.y;

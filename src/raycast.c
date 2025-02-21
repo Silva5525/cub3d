@@ -71,31 +71,3 @@ void	calculate_wall_dimensions(float final_dist, t_wall *wall)
 	if (wall->draw_end >= HEIGHT)
 		wall->draw_end = HEIGHT - 1;
 }
-
-void	draw_wall_slice(t_c *cub, int x, t_wall *wall)
-{
-	float		step;
-	float		tex_pos;
-	int			tex_y;
-	int			y;
-	uint32_t	color;
-
-	y = wall->draw_start;
-	if (wall->wall_height > 1)
-		step = (float)wall->texture->height / wall->wall_height;
-	else
-		step = 1;
-	tex_pos = (wall->draw_start - (HEIGHT / 2)
-			+ (wall->wall_height / 2)) * step;
-	while (y < wall->draw_end)
-	{
-		tex_y = (int)tex_pos;
-		if (tex_y >= (int)wall->texture->height)
-			tex_y = wall->texture->height - 1;
-		tex_pos += step;
-		color = convert_color(((uint32_t *)wall->texture->pixels)[tex_y
-				* wall->texture->width + wall->tex_x]);
-		mlx_put_pixel(cub->world_img, x, y, color);
-		y++;
-	}
-}

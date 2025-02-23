@@ -6,7 +6,7 @@
 /*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 16:04:05 by wdegraf           #+#    #+#             */
-/*   Updated: 2025/02/18 19:32:53 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/02/23 15:42:30 by wdegraf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,5 +72,8 @@ bool	valid_map(t_c *cub, int p_count, int x, int y)
 		}
 		y++;
 	}
+	if (ft_fill(cub->map, (t_xy){cub->map_width, cub->map_height},
+		(t_xy){x, y}))
+		return (write(2, "Error\nMap is not enclosed vald_map\n", 26), false);
 	return (p_count == 1);
 }

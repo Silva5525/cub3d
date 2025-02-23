@@ -6,33 +6,56 @@
 /*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 19:41:01 by wdegraf           #+#    #+#             */
-/*   Updated: 2024/10/23 16:23:13 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/02/23 15:47:06 by wdegraf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	flood_l(char **tab, int x, int y, char target)
+/// @brief helper function for ft_fill
+/// @param map map to test
+/// @param x begin x position
+/// @param y begin y position
+/// @param max size of the map x & y
+/// @return true if the map is enclosed by walls & false if not.
+static bool	flood_l(char **map, int x, int y, t_xy *max)
 {
-	if (x < 0 || y < 0 || tab[y] == NULL || tab[y][x] == '\0')
-		return ;
-	if (tab[y][x] == 'F' || tab[y][x] != target)
-		return ;
-	tab[y][x] = 'F';
-	flood_l(tab, x + 1, y, target);
-	flood_l(tab, x - 1, y, target);
-	flood_l(tab, x, y + 1, target);
-	flood_l(tab, x, y - 1, target);
+	if (x < 0 || y < 0 || x >= max->x || y >= max->y)
+		return (false);
+	if (map[y][x] == '1' || map[y][x] == 'F')
+		return (true);
+	if (map[y][x] == ' ')
+		return (false);
+	map[y][x] = 'F';
+	if (!flood_l(map, x + 1, y, max))
+		return (false);
+	if (!flood_l(map, x - 1, y, max))
+		return (false);
+	if (!flood_l(map, x, y + 1, max))
+		return (false);
+	if (!flood_l(map, x, y - 1, max))
+		return (false);
+	return (true);
 }
 
-void	ft_fill(char **tab, t_xy size, t_xy begin)
+/// @brief tests if the map is enclosed by walls.
+/// @param map map to test
+/// @param size of the map x & y
+/// @param begin in the map x & y
+/// @return true if the map is enclosed by walls & false if not.
+bool	ft_fill(char **map, t_xy size, t_xy begin)
 {
-	char	target;
+	char	**map_copy;
+	int		i;
+	bool	out;
 
-	if (begin.x < 0 || begin.x >= size.x || begin.y < 0 || begin.y >= size.y)
-		return ;
-	target = tab[begin.y][begin.x];
-	flood_l(tab, begin.x, begin.y, target);
+	map_copy = ft_strdup_double(map);
+	out = flood_l(map_copy, begin.x, begin.y, &size);
+	i = 0;
+	while (i < size.y)
+		free(map_copy[i++]);
+	free(map_copy);
+	return (out);
 }
 
 /// TEST MAIN ///#######################################################

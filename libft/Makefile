@@ -6,7 +6,7 @@
 #    By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/14 10:36:05 by wdegraf           #+#    #+#              #
-#    Updated: 2025/01/14 11:00:41 by wdegraf          ###   ########.fr        #
+#    Updated: 2025/02/23 15:22:03 by wdegraf          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,6 +34,7 @@ SRCS = ft_atoi.c ft_bzero.c ft_calloc.c ft_isalnum.c ft_isalpha.c \
 		ft_strjoin_multiple.c ft_build_f_path.c ft_isupper.c \
 		ft_isnumeric.c ft_write_smite.c  ft_magnitude.c \
 		ft_str_end_with.c ft_check_wall.c ft_strspn.c ft_access.c \
+		ft_strdup_double.c \
 
 OBJS = $(SRCS:.c=.o)
 

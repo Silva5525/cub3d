@@ -6,7 +6,7 @@
 /*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:13:48 by wdegraf           #+#    #+#             */
-/*   Updated: 2025/01/14 11:00:53 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/02/23 15:21:33 by wdegraf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ char	*ft_strchr(const char *s, int c);
 char	*ft_strrchr(const char *s, int c);
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len);
 char	*ft_strdup(const char *s1);
+char	**ft_strdup_double(char **str);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strtrim(char const *s1, char const *set);
@@ -103,7 +104,7 @@ t_list	*ft_lstget(t_list *lst, int index);
 ssize_t	ft_strcwords(char *str, char delimeter);
 ssize_t	ft_strcwords_isspace(char *str);
 ssize_t	ft_ato_ssize_t(const char *str);
-void	ft_fill(char **tab, t_xy size, t_xy begin);
+bool	ft_fill(char **tab, t_xy size, t_xy begin);
 int		ft_unsetenv(const char *name, char **envp);
 int		ft_setenv(const char *str, const char *v, char **envp);
 ssize_t	ft_write(int fd, const void *buf, size_t count);

@@ -6,7 +6,7 @@
 /*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 19:41:01 by wdegraf           #+#    #+#             */
-/*   Updated: 2025/02/23 15:47:06 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/02/23 16:05:22 by wdegraf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,60 +58,37 @@ bool	ft_fill(char **map, t_xy size, t_xy begin)
 	return (out);
 }
 
-/// TEST MAIN ///#######################################################
-// #include <stdlib.h>
-// #include <stdio.h>
-
-// char **make_area(char **zone, t_xy size)
-// {
-// 	char	**new;
-// 	int		i;
-// 	int		j;
-// 	new = malloc(sizeof(char*) * size.y);
-// 	i = 0;
-// 	while (i < size.y)
-// 	{
-// 		j = 0;
-// 		new[i] = malloc(size.x + 1);
-// 		while (j < size.x)
-// 		{
-// 			new[i][j] = zone[i][j];
-// 			j++;
-// 		}
-// 		new[i][size.x] = '\0';
-// 		i++;
-// 	}
-// 	return new;
-// }
+// // TEST MAIN ///#######################################################
 
 // int main(void)
 // {
-// 	int i;
-// 	t_xy size = {8, 6};
-// 	t_xy begin = {6, 1};
-// 	char *zone[] = 
-// 	{
+// 	t_xy size = {8, 6};      // Map Größe (Breite x Höhe)
+// 	t_xy begin = {1, 1};     // Startposition (x, y)
+
+// 	// Testmap: 1 = Wand, 0 = freier Bereich
+// 	char **zone = {
 // 		"11111111",
-// 		"10001001",
-// 		"10010001",
+// 		"10N00001",
 // 		"10110001",
+// 		"10010001",
 // 		"11100001",
 // 		"11111111"
 // 	};
-// 	char** area = make_area(zone, size);
-// 	i = 0;
-// 	while (i < size.y)
-// 	{
+// 	char **area = ft_strdup_double(zone);
+// 	if (!area)
+// 		return (printf("Error: Map allocation failed\n"), EXIT_FAILURE);
+// 	printf("Map vor ft_fill:\n");
+// 	for (int i = 0; i < size.y; i++)
 // 		printf("%s\n", area[i]);
-// 		i++;
-// 	}
-// 	printf("\n");
-// 	flood_fill(area, size, begin);
-// 	i = 0;
-// 	while (i < size.y)
-// 	{
+// 	if (ft_fill(area, size, begin))
+// 		printf("\nDie Map ist geschlossen.\n");
+// 	else
+// 		printf("\nDie Map ist nicht geschlossen!\n");
+// 	printf("\nMap nach ft_fill:\n");
+// 	for (int i = 0; i < size.y; i++)
 // 		printf("%s\n", area[i]);
-// 		i++;
-// 	}
+// 	for (int i = 0; i < size.y; i++)
+// 		free(area[i]);
+// 	free(area);
 // 	return (EXIT_SUCCESS);
 // }

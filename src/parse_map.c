@@ -6,7 +6,7 @@
 /*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 19:24:10 by wdegraf           #+#    #+#             */
-/*   Updated: 2025/02/18 22:18:01 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/02/23 13:40:03 by wdegraf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static int	map_line2(char *raw_line, t_c *cub, ssize_t size, bool map)
 		return (free(line), -1);
 	size = map_line_helper(map, line, cub, size);
 	if (size == -1)
-		return (write(2, "MAP_LINE_HELPER\n", 16), free(line), false);
+		return (write(2, "MAP_LINE_HELPER\n", 16), free(line), -1);
 	free(line);
 	line = NULL;
 	return (size);

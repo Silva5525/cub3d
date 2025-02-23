@@ -3,7 +3,7 @@ SO ./textures/path_to_south_texture.png
 WE ./textures/path_to_west_texture.png
 EA ./textures/path_to_east_texture.png
 
-F 165,90,42
+F 165,90,255
 C 127,127,255
 
         1111111111111111111111111

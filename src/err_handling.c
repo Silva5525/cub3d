@@ -6,7 +6,7 @@
 /*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 12:01:59 by wdegraf           #+#    #+#             */
-/*   Updated: 2025/02/19 12:02:14 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/02/23 13:41:25 by wdegraf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	free_mlx(t_c *cub)
 		free(cub->map);
 	if (cub->mlx)
 	{
-		printf("Terminating MLX.../n");
+		ft_printf("Terminating MLX...\n");
 		mlx_terminate(cub->mlx);
 		cub->mlx = NULL;
 	}

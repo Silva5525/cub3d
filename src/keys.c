@@ -12,8 +12,6 @@
 
 #include "cub3d.h"
 
-static float	g_last_angle = -1;
-
 static void	key_rotations(t_c *cub)
 {
 	if (mlx_is_key_down(cub->mlx, MLX_KEY_RIGHT)
@@ -90,10 +88,10 @@ void	key_hook(void *param)
 		mlx_close_window(cub->mlx);
 	key_rotations(cub);
 	key_movements(cub, &delta);
-	if (delta.x != 0 || delta.y != 0 || cub->player.angle != g_last_angle)
+	if (delta.x != 0 || delta.y != 0 || cub->player.angle != cub->last_angle)
 	{
 		try_move(cub, delta);
-		g_last_angle = cub->player.angle;
+		cub->last_angle = cub->player.angle;
 		ray(cub);
 	}
 }

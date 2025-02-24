@@ -93,6 +93,7 @@ typedef struct s_cub3d
 	int				roof;
 	int				floor;
 	uint32_t 		*last_frame_pixel;
+	float			last_angle;
 }					t_c;
 
 //----------------------main.c------------------------------

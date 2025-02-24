@@ -39,6 +39,7 @@ void	init_player(t_c *cub, int x, int y)
 				cub->player.delta_pos = (t_vector){cos(cub->player.angle) * 5,
 					sin(cub->player.angle) * 5};
 				cub->map[y][x] = '0';
+				cub->last_angle = -1;
 				return ;
 			}
 			x++;

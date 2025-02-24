@@ -95,5 +95,6 @@ void	key_hook(void *param)
 		try_move(cub, delta);
 		g_last_angle = cub->player.angle;
 		ray(cub);
+		draw_minimap(cub);
 	}
 }

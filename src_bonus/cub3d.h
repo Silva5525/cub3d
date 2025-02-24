@@ -23,6 +23,12 @@
 # define WIDTH 2048
 # define HEIGHT 1024
 # define TILE_SIZE 32
+# define MINIMAP_WIDTH 512
+# define MINIMAP_HEIGHT 256
+# define MINIMAP_TILE_SIZE 16
+# define MINIMAP_OFFSET (WIDTH - MINIMAP_WIDTH)
+# define MINIMAP_TILE_W (MINIMAP_WIDTH / MINIMAP_TILE_SIZE)
+# define MINIMAP_TILE_H (MINIMAP_WIDTH / MINIMAP_TILE_SIZE)
 # define PLAYER_SIZE 16
 # define PI 3.141592
 # define MOVE_SPEED 0.1
@@ -79,13 +85,13 @@ typedef struct s_cub3d
 {
 	mlx_t			*mlx;
 	mlx_image_t		*img;
+	t_texture		texture[4];
+	t_player		player;
 	char			**map;
 	int				map_width;
 	int				map_height;
-	t_texture		texture[4];
 	int				roof;
 	int				floor;
-	t_player		player;
 	uint32_t 		*last_frame_pixel;
 }					t_c;
 
@@ -107,11 +113,14 @@ void		draw_3d(t_c *cub, bool vertical_hit, t_hit *hit, int r);
 void		clear_img(mlx_image_t *img);
 float		distance(float x1, float y1, float x2, float y2);
 uint32_t	convert_color(uint32_t color);
+void		draw_line_dda(mlx_image_t *ray_img, t_vector start_vec,
+				t_vector end_vec, uint32_t color);
 
 //----------------------texture_utils.c---------------------
 void		select_texture(t_c *cub, mlx_image_t **texture,
 				t_vector vec, bool hit);
-uint32_t	select_texture_x(t_c *cub, mlx_image_t *texture, t_vector vec, bool hit);
+uint32_t	select_texture_x(t_c *cub, mlx_image_t *texture,
+				t_vector vec, bool hit);
 void		draw_wall_slice(t_c *cub, int x, t_wall *wall);
 void		draw_wall_tex(t_c *cub, t_wall *wall, int x, int *y);
 
@@ -142,5 +151,10 @@ bool		is_wall(t_c *cub, float x, float y);
 //----------------------valid_map.c-------------------------
 bool		map_err(char *line, int fd);
 bool		valid_map(t_c *cub, int p_count, int x, int y);
+
+//----------------------mini_map.c--------------------------
+void		draw_minimap(t_c *cub);
+void		draw_minimap_rays(t_c *cub, int start_tile_x,
+				int start_tile_y, int minimap_offset_x);
 
 #endif

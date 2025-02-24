@@ -11,6 +11,7 @@
 # **************************************************************************** #
 
 NAME				= cub3d
+BONUS_NAME			= cub3d_bonus
 DEBUG_NAME			= cub3d_debug
 VALGRIND_DEBUG_NAME	= cub3d_valgrind_debug
 CC					= gcc
@@ -29,6 +30,9 @@ SRCS				= $(wildcard src/*.c)
 OBJS				= $(SRCS:.c=.o)
 DEBUG_OBJS			= $(SRCS:.c=.debug.o)
 VALGRIND_DEBUG_OBJS	= $(SRCS:.c=.valgrind_debug.o)
+
+BONUS_SRCS			= $(wildcard src_bonus/*.c)
+BONUS_OBJS			= $(BONUS_SRCS:.c=.o)
 
 all: clone $(LIBFT_LIB) $(MLX_LIB) $(NAME)
 
@@ -70,6 +74,10 @@ $(VALGRIND_DEBUG_NAME): $(VALGRIND_DEBUG_OBJS) $(LIBFT_LIB) $(MLX_LIB)
 	$(CC) $(CFLAGS) $(VFLAGS) -o $(VALGRIND_DEBUG_NAME) $(VALGRIND_DEBUG_OBJS) $(LDFLAGS)
 	@echo "\033[36m[READY] $(VALGRIND_DEBUG_NAME)\033[0m"
 
+$(BONUS_NAME): $(BONUS_OBJS) $(LIBFT_LIB) $(MLX_LIB)
+	$(CC) $(CFLAGS) -o $(BONUS_NAME) $(BONUS_OBJS) $(LDFLAGS)
+	@echo "\033[36m[READY] $(BONUS_NAME)\033[0m"
+
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 	@echo "\033[32m[OK] $@\033[0m"
@@ -83,13 +91,13 @@ $(VALGRIND_DEBUG_NAME): $(VALGRIND_DEBUG_OBJS) $(LIBFT_LIB) $(MLX_LIB)
 	@echo "\033[32m[OK] $@\033[0m"	
 
 clean:
-	rm -f $(OBJS) $(DEBUG_OBJS) $(VALGRIND_DEBUG_OBJS)
+	rm -f $(OBJS) $(DEBUG_OBJS) $(VALGRIND_DEBUG_OBJS) $(BONUS_OBJS)
 	@make -C $(LIBFT_DIR) clean
 	@echo "\033[31mCleanup object files\033[0m"
 
 fclean: clean
 	rm -rf $(LOCAL_DIR)/build
-	rm -f $(NAME) $(DEBUG_NAME) $(VALGRIND_DEBUG_NAME)
+	rm -f $(NAME) $(DEBUG_NAME) $(VALGRIND_DEBUG_NAME) $(BONUS_NAME)
 	@make -C $(LIBFT_DIR) fclean
 	@echo "\033[31mFull cleanup completed\033[0m"
 
@@ -99,4 +107,6 @@ debug: $(DEBUG_NAME)
 
 valgrind_debug: $(VALGRIND_DEBUG_NAME)
 
-.PHONY: all clone clean fclean re debug valgrind_debug
+bonus: clone $(LIBFT_LIB) $(MLX_LIB) $(BONUS_NAME)
+
+.PHONY: all clone clean fclean re debug valgrind_debug bonus

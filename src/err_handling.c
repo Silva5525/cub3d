@@ -31,6 +31,8 @@ void	free_mlx(t_c *cub)
 	}
 	if (cub->map)
 		free(cub->map);
+	if (cub->last_frame_pixel)
+		free(cub->last_frame_pixel);
 	if (cub->mlx)
 	{
 		ft_printf("Terminating MLX...\n");

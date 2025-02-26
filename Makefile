@@ -6,14 +6,14 @@
 #    By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/06 14:57:16 by wdegraf           #+#    #+#              #
-#    Updated: 2025/02/19 12:12:32 by wdegraf          ###   ########.fr        #
+#    Updated: 2025/02/26 11:55:38 by wdegraf          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME				= cub3d
-BONUS_NAME			= cub3d_bonus
-DEBUG_NAME			= cub3d_debug
-VALGRIND_DEBUG_NAME	= cub3d_valgrind_debug
+NAME				= cub3D
+BONUS_NAME			= cub3D_bonus
+DEBUG_NAME			= cub3D_debug
+VALGRIND_DEBUG_NAME	= cub3D_valgrind_debug
 CC					= gcc
 CFLAGS				= -Wall -Wextra -Werror -I./MLX42/include -I./libft -I.
 DFLAGS				= -g -fsanitize=address

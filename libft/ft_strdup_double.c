@@ -6,14 +6,14 @@
 /*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 14:50:07 by wdegraf           #+#    #+#             */
-/*   Updated: 2025/02/23 15:50:08 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/02/26 14:51:19 by wdegraf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
 /// @brief helper function for ft_strdup_double
-static void	strdup_helper(char **str, char **copy, int i)
+static int	strdup_helper(char **str, char **copy, int i)
 {
 	while (str[i])
 	{
@@ -23,10 +23,12 @@ static void	strdup_helper(char **str, char **copy, int i)
 			while (i > 0)
 				free(copy[--i]);
 			free(copy);
-			return ;
+			copy = NULL;
+			return (0);
 		}
 		i++;
 	}
+	return (i);
 }
 
 /// @brief duplicates a double pointer string array.
@@ -45,8 +47,9 @@ char	**ft_strdup_double(char **str)
 	copy = (char **)malloc(sizeof(char *) * (i + 1));
 	if (!copy)
 		return (NULL);
-	i = 0;
-	strdup_helper(str, copy, i);
+	i = strdup_helper(str, copy, 0);
+	if (!copy)
+		return (NULL);
 	copy[i] = NULL;
 	return (copy);
 }

@@ -6,7 +6,7 @@
 #    By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/06 14:57:16 by wdegraf           #+#    #+#              #
-#    Updated: 2025/02/26 11:55:38 by wdegraf          ###   ########.fr        #
+#    Updated: 2025/02/26 13:54:40 by wdegraf          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ BONUS_NAME			= cub3D_bonus
 DEBUG_NAME			= cub3D_debug
 VALGRIND_DEBUG_NAME	= cub3D_valgrind_debug
 CC					= gcc
-CFLAGS				= -Wall -Wextra -Werror -I./MLX42/include -I./libft -I.
+CFLAGS				= -Wall -Wextra -Werror -g -fsanitize=address -I./MLX42/include -I./libft -I.
 DFLAGS				= -g -fsanitize=address
 VFLAGS				= -g
 LDFLAGS				= -L./MLX42/build -lmlx42 -L./libft -lft -lglfw -ldl -pthread -lm

@@ -6,7 +6,7 @@
 /*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 19:24:10 by wdegraf           #+#    #+#             */
-/*   Updated: 2025/02/26 14:15:06 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/02/26 17:08:59 by wdegraf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ bool	scan_map(char *file, t_c *cub)
 	if (!map_line(fd, cub, 0, false))
 		return (map_err(NULL, fd));
 	close(fd);
+	pad_map_lines(cub);
 	if (!valid_map(cub, 0, 0, 0))
 		return (false);
 	return (true);

@@ -6,7 +6,7 @@
 /*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 19:24:10 by wdegraf           #+#    #+#             */
-/*   Updated: 2025/02/23 15:40:16 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/02/26 17:05:32 by wdegraf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ static char	*end_and_newl_char(char *line)
 	{
 		out = ft_strjoin(line, " ");
 		free(line);
+		if (!out)
+			return (NULL);
 		return (out);
 	}
 	return (line);
@@ -115,6 +117,7 @@ bool	scan_map(char *file, t_c *cub)
 	if (!map_line(fd, cub, 0, false))
 		return (map_err(NULL, fd));
 	close(fd);
+	pad_map_lines(cub);
 	if (!valid_map(cub, 0, 0, 0))
 		return (false);
 	return (true);

@@ -6,7 +6,7 @@
 /*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 14:31:32 by wdegraf           #+#    #+#             */
-/*   Updated: 2025/02/19 12:05:08 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/02/26 17:06:36 by wdegraf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,8 @@ void		init_player(t_c *cub, int x, int y);
 //----------------------draw_map.c--------------------------
 void		draw_floor_and_ceiling(t_c *cub);
 void		draw_3d(t_c *cub, bool vertical_hit, t_hit *hit, int r);
+void		pad_map_lines(t_c *cub);
+
 
 //----------------------draw_utils.c------------------------
 void		clear_img(mlx_image_t *img);

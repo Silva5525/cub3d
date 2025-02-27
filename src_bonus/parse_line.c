@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parse_line.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: mgering <mgering@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 15:35:58 by wdegraf           #+#    #+#             */
-/*   Updated: 2025/02/25 14:58:47 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/02/27 17:17:10 by mgering          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "cub3d_bonus.h"
 
 static bool	line_err(char *writ)
 {

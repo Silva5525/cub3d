@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   draw_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: mgering <mgering@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 22:06:15 by wdegraf           #+#    #+#             */
-/*   Updated: 2025/02/26 17:10:40 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/02/27 17:16:39 by mgering          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "cub3d_bonus.h"
 
 void	draw_3d(t_c *cub, bool vertical_hit, t_hit *hit, int r)
 {

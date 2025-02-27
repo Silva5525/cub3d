@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: mgering <mgering@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 14:31:32 by wdegraf           #+#    #+#             */
-/*   Updated: 2025/02/26 17:07:41 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/02/27 14:30:52 by mgering          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ typedef struct s_cub3d
 	int				roof;
 	int				floor;
 	t_player		player;
-	uint32_t 		*last_frame_pixel;
+	uint32_t		*last_frame_pixel;
 	float			last_angle;
 }					t_c;
 
@@ -113,7 +113,8 @@ uint32_t	convert_color(uint32_t color);
 //----------------------texture_utils.c---------------------
 void		select_texture(t_c *cub, mlx_image_t **texture,
 				t_vector vec, bool hit);
-uint32_t	select_texture_x(t_c *cub, mlx_image_t *texture, t_vector vec, bool hit);
+uint32_t	select_texture_x(t_c *cub, mlx_image_t *texture,
+				t_vector vec, bool hit);
 void		draw_wall_slice(t_c *cub, int x, t_wall *wall);
 void		draw_wall_tex(t_c *cub, t_wall *wall, int x, int *y);
 

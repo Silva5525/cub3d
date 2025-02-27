@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cub3d.h                                            :+:      :+:    :+:   */
+/*   cub3d_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: mgering <mgering@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 14:31:32 by wdegraf           #+#    #+#             */
-/*   Updated: 2025/02/26 17:06:36 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/02/27 17:23:43 by mgering          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CUB3D_H
-# define CUB3D_H
+#ifndef CUB3D_BONUS_H
+# define CUB3D_BONUS_H
 
 # include <libft/libft.h>
 # include <MLX42/MLX42.h>
@@ -26,14 +26,20 @@
 # define MINIMAP_WIDTH 512
 # define MINIMAP_HEIGHT 256
 # define MINIMAP_TILE_SIZE 16
-# define MINIMAP_OFFSET (WIDTH - MINIMAP_WIDTH)
-# define MINIMAP_TILE_W (MINIMAP_WIDTH / MINIMAP_TILE_SIZE)
-# define MINIMAP_TILE_H (MINIMAP_WIDTH / MINIMAP_TILE_SIZE)
 # define PLAYER_SIZE 16
 # define PI 3.141592
 # define MOVE_SPEED 0.1
 # define ROT_SPEED 0.05
 # define DEGREE 0.0174533
+
+typedef struct s_minimap
+{
+	int			offset_x;
+	int			tiles_x;
+	int			tiles_y;
+	int			start_x;
+	int			start_y;
+}				t_minimap;
 
 typedef struct s_vector
 {
@@ -55,6 +61,15 @@ typedef struct s_ray
 	t_vector	vec;
 	float		*distance_vec;
 }				t_ray;
+
+typedef struct s_miniray
+{
+	t_vector	minimap_start;
+	t_vector	minimap_end;
+	t_hit		hit;
+	t_ray		hit_h;
+	t_ray		hit_v;
+}				t_miniray;
 
 typedef struct s_wall
 {
@@ -92,7 +107,7 @@ typedef struct s_cub3d
 	int				map_height;
 	int				roof;
 	int				floor;
-	uint32_t 		*last_frame_pixel;
+	uint32_t		*last_frame_pixel;
 	float			last_angle;
 }					t_c;
 
@@ -110,7 +125,6 @@ void		init_player(t_c *cub, int x, int y);
 void		draw_floor_and_ceiling(t_c *cub);
 void		draw_3d(t_c *cub, bool vertical_hit, t_hit *hit, int r);
 void		pad_map_lines(t_c *cub);
-
 
 //----------------------draw_utils.c------------------------
 void		clear_img(mlx_image_t *img);
@@ -157,7 +171,12 @@ bool		valid_map(t_c *cub, int p_count, int x, int y);
 
 //----------------------mini_map.c--------------------------
 void		draw_minimap(t_c *cub);
-void		draw_minimap_rays(t_c *cub, int start_tile_x,
-				int start_tile_y, int minimap_offset_x);
+
+//----------------------mini_map_utils.c---------------------
+char		get_map_char(t_c *cub, int x, int y);
+void		put_pixel_on_change(t_c *cub, int x, int y, uint32_t color);
+
+//----------------------mini_map_ray.c-----------------------
+void		draw_minimap_rays(t_c *cub, t_minimap minimap);
 
 #endif

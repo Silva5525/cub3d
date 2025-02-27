@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   texture_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgering <mgering@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: mgering <mgering@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 15:50:15 by mgering           #+#    #+#             */
-/*   Updated: 2025/02/20 15:50:15 by mgering          ###   ########.fr       */
+/*   Updated: 2025/02/27 17:17:24 by mgering          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "cub3d_bonus.h"
 
 void	select_texture(t_c *cub, mlx_image_t **texture,
 	t_vector vec, bool hit)

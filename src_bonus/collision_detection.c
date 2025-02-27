@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   collision_detection.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgering <mgering@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: mgering <mgering@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 15:50:15 by mgering           #+#    #+#             */
-/*   Updated: 2025/02/20 15:50:15 by mgering          ###   ########.fr       */
+/*   Updated: 2025/02/27 17:16:34 by mgering          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "cub3d_bonus.h"
 
 bool	collision(t_c *cub, float x, float y)
 {
@@ -24,7 +24,7 @@ bool	collision(t_c *cub, float x, float y)
 	{
 		return (true);
 	}
-	if (is_wall(cub, x -(PLAYER_SIZE / 2), y - (PLAYER_SIZE / 2))
+	if (is_wall(cub, x - (PLAYER_SIZE / 2), y - (PLAYER_SIZE / 2))
 		|| is_wall(cub, x + (PLAYER_SIZE / 2), y - (PLAYER_SIZE / 2))
 		|| is_wall(cub, x - (PLAYER_SIZE / 2), y + (PLAYER_SIZE / 2))
 		|| is_wall(cub, x + (PLAYER_SIZE / 2), y + (PLAYER_SIZE / 2)))

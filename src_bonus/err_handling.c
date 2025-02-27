@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   err_handling.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: mgering <mgering@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 12:01:59 by wdegraf           #+#    #+#             */
-/*   Updated: 2025/02/23 13:41:25 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/02/27 17:16:44 by mgering          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "cub3d_bonus.h"
 
 void	delete_if(t_c *cub)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: mgering <mgering@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 22:06:15 by wdegraf           #+#    #+#             */
-/*   Updated: 2025/02/26 17:10:45 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/02/27 14:31:03 by mgering          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void	draw_3d(t_c *cub, bool vertical_hit, t_hit *hit, int r)
 	wall.tex_x = select_texture_x(cub, wall.texture, hit->vec, vertical_hit);
 	draw_wall_slice(cub, r, &wall);
 }
-
 
 static void	pad_map_lines2(t_c *cub, int len, char *new_line)
 {

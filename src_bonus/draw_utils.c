@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   draw_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: mgering <mgering@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 22:05:12 by wdegraf           #+#    #+#             */
-/*   Updated: 2025/02/18 22:05:15 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/02/27 17:16:42 by mgering          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "cub3d_bonus.h"
 
 void	clear_img(mlx_image_t *img)
 {

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   raycast.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgering <mgering@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: mgering <mgering@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 15:50:15 by mgering           #+#    #+#             */
-/*   Updated: 2025/02/20 15:50:15 by mgering          ###   ########.fr       */
+/*   Updated: 2025/02/27 17:17:21 by mgering          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "cub3d_bonus.h"
 
 static void		vertical_hit(t_c *cub, t_hit *hit, t_ray *hit_v, int r);
 static void		horizontal_hit(t_c *cub, t_hit *hit, t_ray *hit_h, int r);

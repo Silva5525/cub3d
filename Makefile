@@ -6,7 +6,7 @@
 #    By: mgering <mgering@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/06 14:57:16 by wdegraf           #+#    #+#              #
-#    Updated: 2025/02/28 13:23:57 by mgering          ###   ########.fr        #
+#    Updated: 2025/02/28 13:59:17 by mgering          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,6 +57,10 @@ $(LIBMLX):
 	@cmake -S $(LOCAL_DIR) -B $(LOCAL_DIR)/build && \
 	make -C $(LOCAL_DIR)/build -j4
 
+$(LIBFT_LIB):
+	@echo "\033[32mBuilding libft library\033[0m"
+	@$(MAKE) -C $(LIBFT_DIR)
+
 $(NAME): $(OBJS)
 	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT_LIB) $(MLX_LIB) $(LDFLAGS) -o $(NAME)
 
@@ -81,10 +85,12 @@ $(VALGRIND_DEBUG_NAME): $(VALGRIND_DEBUG_OBJS)
 clean:
 	@echo Deleting objects...
 	@rm -rf $(OBJS) $(BONUS_OBJS) $(DEBUG_OBJS) $(VALGRIND_DEBUG_OBJS)
+	@$(MAKE) -C $(LIBFT_DIR) clean
 
 fclean: clean
 	@echo Deleting executables...
 	@rm -f $(NAME) $(BONUS_NAME) $(DEBUG_NAME) $(VALGRIND_DEBUG_NAME)
+	@$(MAKE) -C $(LIBFT_DIR) fclean
 
 re: fclean all
 

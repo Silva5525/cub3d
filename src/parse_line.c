@@ -6,7 +6,7 @@
 /*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 15:35:58 by wdegraf           #+#    #+#             */
-/*   Updated: 2025/02/25 14:58:54 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/02/28 13:02:11 by wdegraf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ static int	parse_color(char *line, int *color, int i, int *out)
 				return (free(color), -1);
 		i++;
 	}
+	if (*line != ' ')
+		return (free(color), -1);
 	*out = (color[0] << 24) | (color[1] << 16) | (color[2] << 8) | 255;
 	free(color);
 	return (0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_line.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgering <mgering@student.42.fr>            +#+  +:+       +#+        */
+/*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 15:35:58 by wdegraf           #+#    #+#             */
-/*   Updated: 2025/02/27 17:17:10 by mgering          ###   ########.fr       */
+/*   Updated: 2025/02/28 13:03:10 by wdegraf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ static int	parse_color(char *line, int *color, int i, int *out)
 				return (free(color), -1);
 		i++;
 	}
+	if (*line != ' ')
+		return (free(color), -1);
 	*out = (color[0] << 24) | (color[1] << 16) | (color[2] << 8) | 255;
 	free(color);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 15:35:58 by wdegraf           #+#    #+#             */
-/*   Updated: 2025/02/28 13:02:11 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/02/28 14:23:20 by wdegraf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,9 +104,13 @@ bool	parse_line(char *trim_line, t_c *cub, mlx_texture_t *texture,
 		else
 			return (true);
 	}
-	if (ft_strncmp(trim_line, "F ", 2) == 0)
+	if ((ft_strncmp(trim_line, "F ", 2) == 0) && cub->floor == -1)
 		return (parse_color(trim_line + 2, color, 0, &cub->floor) == 0);
-	if (ft_strncmp(trim_line, "C ", 2) == 0)
+	else if ((ft_strncmp(trim_line, "F ", 2) == 0) && cub->floor != -1)
+		return (line_err("Duplicate floor color.\n"));
+	if (ft_strncmp(trim_line, "C ", 2) == 0 && cub->roof == -1)
 		return (parse_color(trim_line + 2, color, 0, &cub->roof) == 0);
+	else if ((ft_strncmp(trim_line, "C ", 2) == 0) && cub->roof != -1)
+		return (line_err("Duplicate floor color.\n"));
 	return (line_err("Invalid line.\n"));
 }

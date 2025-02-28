@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+         #
+#    By: mgering <mgering@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/06 14:57:16 by wdegraf           #+#    #+#              #
-#    Updated: 2025/02/28 12:48:17 by wdegraf          ###   ########.fr        #
+#    Updated: 2025/02/28 13:23:57 by mgering          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,77 +36,62 @@ BONUS_OBJS			= $(BONUS_SRCS:.c=.o)
 
 all: clone $(LIBFT_LIB) $(MLX_LIB) $(NAME)
 
+bonus: clone $(LIBFT_LIB) $(MLX_LIB) $(BONUS_NAME)
+
+debug: clone $(LIBFT_LIB) $(MLX_LIB) $(DEBUG_NAME)
+
+valgrind_debug: clone $(LIBFT_LIB) $(MLX_LIB) $(VALGRIND_DEBUG_NAME)
+
 clone:
 	@if [ -d $(LOCAL_DIR) ]; then \
 		echo "\033[36mRepository already cloned\033[0m"; \
 	else \
 		echo "\033[32mCloning and building MLX42\033[0m"; \
 		git clone $(REPO_URL) $(LOCAL_DIR) && \
-		cd $(LOCAL_DIR) && \
-		cmake -B build && \
-		cd build && \
-		make; \
+		cmake -S $(LOCAL_DIR) -B $(LOCAL_DIR)/build && \
+		make -C $(LOCAL_DIR)/build -j4; \
 	fi
 
-$(MLX_LIB):
-	@if [ ! -d $(LOCAL_DIR) ]; then \
-		echo "\033[32mCloning and building MLX42\033[0m"; \
-		git clone $(REPO_URL) $(LOCAL_DIR); \
-	fi
+$(LIBMLX):
 	@echo "\033[32mBuilding MLX42 library\033[0m"
-	@cd $(LOCAL_DIR) && cmake -B build && cd build && make
+	@cmake -S $(LOCAL_DIR) -B $(LOCAL_DIR)/build && \
+	make -C $(LOCAL_DIR)/build -j4
 
-$(LIBFT_LIB):
-	@if [ ! -f $(LIBFT_LIB) ]; then \
-		echo "\033[32mBuilding libft library\033[0m"; \
-		make -C $(LIBFT_DIR); \
-	fi
+$(NAME): $(OBJS)
+	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT_LIB) $(MLX_LIB) $(LDFLAGS) -o $(NAME)
 
-$(NAME): $(OBJS) $(LIBFT_LIB) $(MLX_LIB)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LDFLAGS)
-	@echo "\033[36m[READY] $(NAME)\033[0m"
+$(BONUS_NAME): $(BONUS_OBJS)
+	@$(CC) $(CFLAGS) $(BONUS_OBJS) $(LIBFT_LIB) $(MLX_LIB) $(LDFLAGS) -o $(BONUS_NAME)
 
-$(DEBUG_NAME): $(DEBUG_OBJS) $(LIBFT_LIB) $(MLX_LIB)
-	$(CC) $(CFLAGS) $(DFLAGS) -o $(DEBUG_NAME) $(DEBUG_OBJS) $(LDFLAGS)
-	@echo "\033[36m[READY] $(DEBUG_NAME)\033[0m"
+$(DEBUG_NAME): $(DEBUG_OBJS)
+	@$(CC) $(CFLAGS) $(DFLAGS) $(DEBUG_OBJS) $(LIBFT_LIB) $(MLX_LIB) $(LDFLAGS) -o $(DEBUG_NAME)
 
-$(VALGRIND_DEBUG_NAME): $(VALGRIND_DEBUG_OBJS) $(LIBFT_LIB) $(MLX_LIB)
-	$(CC) $(CFLAGS) $(VFLAGS) -o $(VALGRIND_DEBUG_NAME) $(VALGRIND_DEBUG_OBJS) $(LDFLAGS)
-	@echo "\033[36m[READY] $(VALGRIND_DEBUG_NAME)\033[0m"
-
-$(BONUS_NAME): $(BONUS_OBJS) $(LIBFT_LIB) $(MLX_LIB)
-	$(CC) $(CFLAGS) -o $(BONUS_NAME) $(BONUS_OBJS) $(LDFLAGS)
-	@echo "\033[36m[READY] $(BONUS_NAME)\033[0m"
+$(VALGRIND_DEBUG_NAME): $(VALGRIND_DEBUG_OBJS)
+	@$(CC) $(CFLAGS) $(VFLAGS) $(VALGRIND_DEBUG_OBJS) $(LIBFT_LIB) $(MLX_LIB) $(LDFLAGS) -o $(VALGRIND_DEBUG_NAME)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
-	@echo "\033[32m[OK] $@\033[0m"
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 %.debug.o: %.c
-	$(CC) $(CFLAGS) $(DFLAGS) -c $< -o $@
-	@echo "\033[32m[OK] $@\033[0m"
+	@$(CC) $(CFLAGS) $(DFLAGS) -c $< -o $@
 
 %.valgrind_debug.o: %.c
-	$(CC) $(CFLAGS) $(VFLAGS) -c $< -o $@
-	@echo "\033[32m[OK] $@\033[0m"	
+	@$(CC) $(CFLAGS) $(VFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJS) $(DEBUG_OBJS) $(VALGRIND_DEBUG_OBJS) $(BONUS_OBJS)
-	@make -C $(LIBFT_DIR) clean
-	@echo "\033[31mCleanup object files\033[0m"
+	@echo Deleting objects...
+	@rm -rf $(OBJS) $(BONUS_OBJS) $(DEBUG_OBJS) $(VALGRIND_DEBUG_OBJS)
 
 fclean: clean
-	rm -rf $(LOCAL_DIR)/build
-	rm -f $(NAME) $(DEBUG_NAME) $(VALGRIND_DEBUG_NAME) $(BONUS_NAME)
-	@make -C $(LIBFT_DIR) fclean
-	@echo "\033[31mFull cleanup completed\033[0m"
+	@echo Deleting executables...
+	@rm -f $(NAME) $(BONUS_NAME) $(DEBUG_NAME) $(VALGRIND_DEBUG_NAME)
 
 re: fclean all
 
-debug: $(DEBUG_NAME)
+re_bonus: fclean bonus
 
-valgrind_debug: $(VALGRIND_DEBUG_NAME)
+re_debug: fclean debug
 
-bonus: clone $(LIBFT_LIB) $(MLX_LIB) $(BONUS_NAME)
+re_valgrind_debug: fclean valgrind_debug
 
-.PHONY: all clone clean fclean re debug valgrind_debug bonus
+.PHONY: all bonus debug valgrind_debug clean fclean re re_bonus re_debug re_valgrind_debug clone

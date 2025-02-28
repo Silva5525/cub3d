@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgering <mgering@student.42.fr>            +#+  +:+       +#+        */
+/*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 14:31:32 by wdegraf           #+#    #+#             */
-/*   Updated: 2025/02/27 14:30:52 by mgering          ###   ########.fr       */
+/*   Updated: 2025/02/28 18:07:01 by wdegraf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ typedef struct s_cub3d
 	t_player		player;
 	uint32_t		*last_frame_pixel;
 	float			last_angle;
+	int				compass;
 }					t_c;
 
 //----------------------main.c------------------------------

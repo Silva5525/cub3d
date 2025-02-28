@@ -6,7 +6,7 @@
 /*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 15:35:58 by wdegraf           #+#    #+#             */
-/*   Updated: 2025/02/28 14:23:20 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/02/28 18:24:36 by wdegraf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,11 +99,14 @@ bool	parse_line(char *trim_line, t_c *cub, mlx_texture_t *texture,
 		return (line_err("identifier in parse_line failed.\n"));
 	if (path)
 	{
+		cub->compass += i;
 		if (!direction_line(path, cub, texture, i))
 			return (line_err("direction_line failed.\n"));
 		else
 			return (true);
 	}
+	if (cub->compass != 5)
+		return (line_err("Invalid line.\n"));
 	if ((ft_strncmp(trim_line, "F ", 2) == 0) && cub->floor == -1)
 		return (parse_color(trim_line + 2, color, 0, &cub->floor) == 0);
 	else if ((ft_strncmp(trim_line, "F ", 2) == 0) && cub->floor != -1)

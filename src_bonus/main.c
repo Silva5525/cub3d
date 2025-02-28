@@ -6,7 +6,7 @@
 /*   By: wdegraf <wdegraf@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 17:55:10 by wdegraf           #+#    #+#             */
-/*   Updated: 2025/02/28 14:23:46 by wdegraf          ###   ########.fr       */
+/*   Updated: 2025/02/28 18:25:17 by wdegraf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static void	init_map_and_player(char *file, t_c *cub)
 {
 	cub->roof = -1;
 	cub->floor = -1;
+	cub->compass = -1;
 	if (!ft_str_end_with(file, ".cub"))
 		er_ex(cub, "Map needs a .cub extension.\n");
 	if (!scan_map(file, cub))
